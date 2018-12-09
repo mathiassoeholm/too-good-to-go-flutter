@@ -27,4 +27,11 @@ void main() {
     expect(find.text('0'), findsNothing);
     expect(find.text('1'), findsOneWidget);
   });
+
+  testWidgets('The title is displayed', (WidgetTester tester) async {
+    // Build our app and trigger a frame.
+    await tester.pumpWidget(MyApp());
+
+    expect(find.text("Too Good To Go"), findsOneWidget);
+  });
 }
