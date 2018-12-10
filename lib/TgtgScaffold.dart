@@ -12,9 +12,7 @@ class TgtgScaffold extends StatelessWidget {
       child: Column(
         children: <Widget>[
           TGTGAppBar(),
-          Expanded(
-            child: Text('Hello World')
-          ),
+          Text('Hello World')
         ],
       )
     );
