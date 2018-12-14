@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'TGTGAppBar.dart';
+import '../shared/TGTGAppBar.dart';
 
-class TgtgScaffold extends StatelessWidget {
-  const TgtgScaffold({
+class Home extends StatelessWidget {
+  const Home({
     Key key,
   }) : super(key: key);
 

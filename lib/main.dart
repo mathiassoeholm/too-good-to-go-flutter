@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'theme.dart';
-import 'TgtgScaffold.dart';
+import './shared/theme.dart';
+import './home/Home.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Too Good To Go',
       theme: getTheme(),
-      home: TgtgScaffold(),
+      home: Home(),
     );
   }
 }
