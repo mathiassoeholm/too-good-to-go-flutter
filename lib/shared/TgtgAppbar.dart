@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'theme.dart';
+import 'ChangeColorButton.dart';
 
-class TGTGAppBar extends StatelessWidget {
+class TGTGAppBar extends StatefulWidget {
+  @override
+  TGTGAppBarState createState() {
+    return new TGTGAppBarState();
+  }
+}
+
+class TGTGAppBarState extends State<TGTGAppBar> {
   @override
   Widget build(BuildContext context) => Container(
         height: 50.0 + MediaQuery.of(context).padding.top,
@@ -10,7 +18,7 @@ class TGTGAppBar extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
-            createIconButton(Icons.menu,
+            _createIconButton(Icons.menu,
               context: context,
               padding: EdgeInsets.only(left: 8),
               onPressed: null),
@@ -23,23 +31,22 @@ class TGTGAppBar extends StatelessWidget {
                     fontSize: AppTheme.titleFontSize),
               ),
             ),
-            createIconButton(Icons.inbox,
+            _createIconButton(Icons.inbox,
               context: context,
-              padding: EdgeInsets.only(right: 8),
-              onPressed: null),
+              padding: EdgeInsets.only(right: 20, top: 20),
+              onPressed: () => {}),
           ],
         ),
       );
 
-    IconButton createIconButton(IconData iconData, {
+    ChangeColorButton _createIconButton(IconData iconData, {
       BuildContext context,
       EdgeInsets padding,
       VoidCallback onPressed
-    }) => IconButton(
+    }) => ChangeColorButton(
         padding: padding,
-        icon: Icon(iconData, 
-          size: 35,
-          color: Theme.of(context).primaryTextTheme.title.color),
+        iconData: iconData,
+        size: 35,
         onPressed: onPressed,
       );
 }
