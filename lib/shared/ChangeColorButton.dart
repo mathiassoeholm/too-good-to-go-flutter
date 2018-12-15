@@ -23,6 +23,7 @@ class _ChangeColorButtonState extends State<ChangeColorButton> {
   @override
   Widget build(BuildContext context) =>
     GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onTapDown: (_) {
         setState(() { _isPressed = true; });
       },

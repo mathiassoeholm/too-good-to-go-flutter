@@ -20,7 +20,7 @@ class TGTGAppBarState extends State<TGTGAppBar> {
           children: <Widget>[
             _createIconButton(Icons.menu,
               context: context,
-              padding: EdgeInsets.only(left: 8),
+              padding: EdgeInsets.only(left: 15, top: 10, right: 10),
               onPressed: null),
             Padding(
               padding: EdgeInsets.only(bottom: 12),
@@ -33,7 +33,7 @@ class TGTGAppBarState extends State<TGTGAppBar> {
             ),
             _createIconButton(Icons.inbox,
               context: context,
-              padding: EdgeInsets.only(right: 20, top: 20),
+              padding: EdgeInsets.only(right: 15, top: 10, left: 10),
               onPressed: () => {}),
           ],
         ),
