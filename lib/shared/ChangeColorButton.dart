@@ -29,6 +29,7 @@ class _ChangeColorButtonState extends State<ChangeColorButton> {
       },
       onTapUp: (_) {
         setState(() { _isPressed = false; });
+        widget.onPressed();
       },
       onTapCancel: () {
         setState(() { _isPressed = false; });
