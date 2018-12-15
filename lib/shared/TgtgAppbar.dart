@@ -22,7 +22,7 @@ class TGTGAppBarState extends State<TGTGAppBar> {
               context: context,
               padding: EdgeInsets.only(left: 8),
               onPressed: null),
-            Container(
+            Padding(
               padding: EdgeInsets.only(bottom: 12),
               child: Text('Too Good To Go',
                 style: TextStyle(
