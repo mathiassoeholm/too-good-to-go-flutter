@@ -38,5 +38,10 @@ void main() {
     await tester.pump();
 
     expect(find.byType(CircularProgressIndicator), findsNothing);
+
+    final listView = find.byType(ListView);
+
+    expect(listView, findsOneWidget);
+    expect(find.descendant(of: listView, matching: find.byType(FeedItemView)), findsNWidgets(2));
   });
 }
