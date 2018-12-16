@@ -8,14 +8,31 @@ part 'feed_item.g.dart';
 abstract class FeedItem implements Built<FeedItem, FeedItemBuilder> {
   static Serializer<FeedItem> get serializer => _$feedItemSerializer;
 
+  @nullable
   String get companyName;
+
+  @nullable
   String get coverImage;
+
+  @nullable
   String get avatarImage;
+
+  @nullable
   Location get location;
+
+  @nullable
   int get itemsLeft;
+
+  @nullable
   BuiltMap<String, int> get price;
+
+  @nullable
   String get timeStart;
+
+  @nullable
   String get timeEnd;
+
+  @nullable
   int get favorites;
 
   FeedItem._();

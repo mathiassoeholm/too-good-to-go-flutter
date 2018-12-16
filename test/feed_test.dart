@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import "package:test/test.dart";
+import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/feed/json_parser.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 
 void main() {
   const fakeJson =
@@ -41,7 +46,7 @@ void main() {
       ]
     """;
 
-  test("Parse json", () {
+  test('Parse json', () {
     FeedItem item = parseFeedJson(fakeJson).first;
     expect(item.companyName, equals('Kvickly - Veri (Bager)'));
     expect(item.coverImage, equals('cover-image-url-0'));
@@ -55,5 +60,17 @@ void main() {
     expect(item.favorites, 219);
 
     expect(parseFeedJson(fakeJson)[1].companyName, equals('Kvickly - Veri (frugt og grønt)'));
+  });
+
+  test('Feed service', () async {
+
+    final mockClient = MockClient((request) async {
+      return http.Response(fakeJson, 200);
+    });
+
+    final feedService = FeedService(httpClient: mockClient);
+    final feed = await feedService.getFeed();
+
+    expect(feed.first.companyName, equals('Kvickly - Veri (Bager)'));
   });
 }

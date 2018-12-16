@@ -17,36 +17,62 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
   @override
   Iterable serialize(Serializers serializers, FeedItem object,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = <Object>[
-      'companyName',
-      serializers.serialize(object.companyName,
-          specifiedType: const FullType(String)),
-      'coverImage',
-      serializers.serialize(object.coverImage,
-          specifiedType: const FullType(String)),
-      'avatarImage',
-      serializers.serialize(object.avatarImage,
-          specifiedType: const FullType(String)),
-      'location',
-      serializers.serialize(object.location,
-          specifiedType: const FullType(Location)),
-      'itemsLeft',
-      serializers.serialize(object.itemsLeft,
-          specifiedType: const FullType(int)),
-      'price',
-      serializers.serialize(object.price,
-          specifiedType: const FullType(
-              BuiltMap, const [const FullType(String), const FullType(int)])),
-      'timeStart',
-      serializers.serialize(object.timeStart,
-          specifiedType: const FullType(String)),
-      'timeEnd',
-      serializers.serialize(object.timeEnd,
-          specifiedType: const FullType(String)),
-      'favorites',
-      serializers.serialize(object.favorites,
-          specifiedType: const FullType(int)),
-    ];
+    final result = <Object>[];
+    if (object.companyName != null) {
+      result
+        ..add('companyName')
+        ..add(serializers.serialize(object.companyName,
+            specifiedType: const FullType(String)));
+    }
+    if (object.coverImage != null) {
+      result
+        ..add('coverImage')
+        ..add(serializers.serialize(object.coverImage,
+            specifiedType: const FullType(String)));
+    }
+    if (object.avatarImage != null) {
+      result
+        ..add('avatarImage')
+        ..add(serializers.serialize(object.avatarImage,
+            specifiedType: const FullType(String)));
+    }
+    if (object.location != null) {
+      result
+        ..add('location')
+        ..add(serializers.serialize(object.location,
+            specifiedType: const FullType(Location)));
+    }
+    if (object.itemsLeft != null) {
+      result
+        ..add('itemsLeft')
+        ..add(serializers.serialize(object.itemsLeft,
+            specifiedType: const FullType(int)));
+    }
+    if (object.price != null) {
+      result
+        ..add('price')
+        ..add(serializers.serialize(object.price,
+            specifiedType: const FullType(BuiltMap,
+                const [const FullType(String), const FullType(int)])));
+    }
+    if (object.timeStart != null) {
+      result
+        ..add('timeStart')
+        ..add(serializers.serialize(object.timeStart,
+            specifiedType: const FullType(String)));
+    }
+    if (object.timeEnd != null) {
+      result
+        ..add('timeEnd')
+        ..add(serializers.serialize(object.timeEnd,
+            specifiedType: const FullType(String)));
+    }
+    if (object.favorites != null) {
+      result
+        ..add('favorites')
+        ..add(serializers.serialize(object.favorites,
+            specifiedType: const FullType(int)));
+    }
 
     return result;
   }
@@ -141,35 +167,7 @@ class _$FeedItem extends FeedItem {
       this.timeStart,
       this.timeEnd,
       this.favorites})
-      : super._() {
-    if (companyName == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'companyName');
-    }
-    if (coverImage == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'coverImage');
-    }
-    if (avatarImage == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'avatarImage');
-    }
-    if (location == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'location');
-    }
-    if (itemsLeft == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'itemsLeft');
-    }
-    if (price == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'price');
-    }
-    if (timeStart == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'timeStart');
-    }
-    if (timeEnd == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'timeEnd');
-    }
-    if (favorites == null) {
-      throw new BuiltValueNullFieldError('FeedItem', 'favorites');
-    }
-  }
+      : super._();
 
   @override
   FeedItem rebuild(void updates(FeedItemBuilder b)) =>
@@ -309,9 +307,9 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
               companyName: companyName,
               coverImage: coverImage,
               avatarImage: avatarImage,
-              location: location.build(),
+              location: _location?.build(),
               itemsLeft: itemsLeft,
-              price: price.build(),
+              price: _price?.build(),
               timeStart: timeStart,
               timeEnd: timeEnd,
               favorites: favorites);
@@ -319,10 +317,10 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
       String _$failedField;
       try {
         _$failedField = 'location';
-        location.build();
+        _location?.build();
 
         _$failedField = 'price';
-        price.build();
+        _price?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'FeedItem', _$failedField, e.toString());
