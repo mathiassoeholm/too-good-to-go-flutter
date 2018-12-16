@@ -1,5 +1,6 @@
 import "package:test/test.dart";
 import 'package:too_good_to_go/feed/json_parser.dart';
+import 'package:too_good_to_go/feed/models/feed_item.dart';
 
 void main() {
   const fakeJson =
@@ -7,8 +8,8 @@ void main() {
       [
         {
           "companyName": "Kvickly - Veri (Bager)",
-          "coverImage": "https://i.kinja-img.com/gawker-media/image/upload/s--gf7NfpMG--/c_scale,f_auto,fl_progressive,q_80,w_800/ox6m5b5fev1yoifdlnda.jpg",
-          "avatarImage": "https://cdn.freebiesupply.com/logos/large/2x/kvickly-logo-png-transparent.png",
+          "coverImage": "cover-image-url-0",
+          "avatarImage": "avatar-image-url-0",
           "location": {
             "lat" : 37.4224764,
             "lng" : -122.0842499
@@ -23,8 +24,8 @@ void main() {
         },
         {
           "companyName": "Kvickly - Veri (frugt og grønt)",
-          "coverImage": "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/766/low-calorie-fruit-1516368847.jpg",
-          "avatarImage": "https://cdn.freebiesupply.com/logos/large/2x/kvickly-logo-png-transparent.png",
+          "coverImage": "cover-image-url-1",
+          "avatarImage": "avatar-image-url-1",
           "location": {
             "lat" : 37.4224764,
             "lng" : -122.0842499
@@ -41,6 +42,18 @@ void main() {
     """;
 
   test("Parse json", () {
-    expect(parseFeedJson(fakeJson).first.companyName, equals('Kvickly - Veri (Bager)'));
+    FeedItem item = parseFeedJson(fakeJson).first;
+    expect(item.companyName, equals('Kvickly - Veri (Bager)'));
+    expect(item.coverImage, equals('cover-image-url-0'));
+    expect(item.avatarImage, equals('avatar-image-url-0'));
+    expect(item.location.lat, equals(37.4224764));
+    expect(item.location.lng, equals(-122.0842499));
+    expect(item.itemsLeft, 5);
+    expect(item.price['dkk'], 39);
+    expect(item.timeStart, '16:45');
+    expect(item.timeEnd, '17:00');
+    expect(item.favorites, 219);
+
+    expect(parseFeedJson(fakeJson)[1].companyName, equals('Kvickly - Veri (frugt og grønt)'));
   });
 }

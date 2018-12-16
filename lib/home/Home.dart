@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../shared/TGTGAppBar.dart';
+import 'package:too_good_to_go/shared/widgets/TgtgAppbar.dart';
 
 class Home extends StatelessWidget {
   const Home({

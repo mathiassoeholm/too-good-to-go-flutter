@@ -1,3 +1,0 @@
-class FeedItem {
-  String companyName;
-}
