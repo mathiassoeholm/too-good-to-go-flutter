@@ -1,9 +1,3 @@
-// Plan
-// Create a feed_item instance
-// Pump a FeedItemWidget using the feed_item
-// Ensure all info is shown
-// Ensure press action gets invoked (Use mockito?)
-
 import 'dart:async';
 
 import 'package:flutter_test/flutter_test.dart';

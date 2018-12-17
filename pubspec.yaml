@@ -1,5 +1,5 @@
 name: too_good_to_go
-description: A new Flutter project.
+description: A copy of the Too Good To Go app, made in Flutter.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -16,6 +16,7 @@ dependencies:
   http: ^0.12.0
   built_value: ^6.2.0
   built_collection: ^4.1.0
+  rxdart: ^0.20.0
   flutter:
     sdk: flutter
 

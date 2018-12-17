@@ -1,9 +1,13 @@
 import "package:test/test.dart";
+import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/feed/json_parser.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
+import 'package:mockito/mockito.dart';
+
+import 'mocks.dart';
 
 void main() {
   const fakeJson =
@@ -70,5 +74,19 @@ void main() {
     final feed = await feedService.getFeed();
 
     expect(feed.first.companyName, equals('Kvickly - Veri (Bager)'));
+  });
+  
+  test('Feed Bloc', () async {
+
+    final mockFeedService = MockFeedService();
+    final feedItem = FeedItem((b) => b..companyName = 'Food Inc.');
+
+    when(mockFeedService.getFeed()).thenAnswer((_) =>
+      Future.value([feedItem]));
+
+    final bloc = FeedBloc(feedService: mockFeedService);
+    final feed = await bloc.feed.first;
+
+    expect(feed.first.companyName, equals('Food Inc.'));
   });
 }
