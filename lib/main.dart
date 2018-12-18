@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/testing.dart';
+import 'package:too_good_to_go/feed/feed_bloc.dart';
+import 'package:too_good_to_go/feed/feed_service.dart';
+import 'package:too_good_to_go/feed/widgets/InheritedFeedBloc.dart';
 import './shared/theme.dart';
 import './home/Home.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
@@ -15,11 +20,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final httpClient = http.Client;
+    final feedService = FeedService(httpClient: http.Client);
+    final feedBloc = FeedBloc(feedService: feedService);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Too Good To Go',
       theme: getTheme(),
-      home: Home(),
+      home: InheritedFeedBloc(
+          bloc: feedBloc,
+          child: Home()),
     );
   }
 }
