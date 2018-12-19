@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:too_good_to_go/feed/widgets/FeedView.dart';
+import 'package:too_good_to_go/feed/widgets/InheritedFeedBloc.dart';
 import 'package:too_good_to_go/shared/widgets/TgtgAppbar.dart';
 
 class Home extends StatelessWidget {
@@ -8,11 +10,14 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final inheritedFeedBloc = InheritedFeedBloc.of(context);
+
     return Material(
       child: Column(
         children: <Widget>[
           TGTGAppBar(),
-          Text('Hello World')
+          FeedView(feedBloc: inheritedFeedBloc.bloc)
         ],
       )
     );

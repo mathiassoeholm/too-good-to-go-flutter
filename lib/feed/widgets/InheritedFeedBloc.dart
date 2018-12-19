@@ -9,6 +9,10 @@ class InheritedFeedBloc extends InheritedWidget {
     @required this.bloc,
   }) : super(child: child);
 
+  static InheritedFeedBloc of(BuildContext context) {
+    return context.inheritFromWidgetOfExactType(InheritedFeedBloc);
+  }
+
   @override
   bool updateShouldNotify(InheritedFeedBloc old) {
     return bloc != old.bloc;

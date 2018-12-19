@@ -20,8 +20,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final httpClient = http.Client;
-    final feedService = FeedService(httpClient: http.Client);
+    final dummyJsonFuture = DefaultAssetBundle.of(context).loadString('assets/dummy-feed.json');
+
+    final httpClient = MockClient((request) async {
+      final json = await dummyJsonFuture;
+      return http.Response(json, 200);
+    });
+
+    final feedService = FeedService(httpClient: httpClient);
     final feedBloc = FeedBloc(feedService: feedService);
 
     return MaterialApp(
