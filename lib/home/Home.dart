@@ -17,7 +17,11 @@ class Home extends StatelessWidget {
       child: Column(
         children: <Widget>[
           TGTGAppBar(),
-          FeedView(feedBloc: inheritedFeedBloc.bloc)
+          Expanded(
+            child: FeedView(
+              feedBloc: inheritedFeedBloc.bloc
+            )
+          )
         ],
       )
     );

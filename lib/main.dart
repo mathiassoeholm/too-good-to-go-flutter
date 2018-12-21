@@ -13,22 +13,30 @@ void main() {
     statusBarColor: Colors.white,
   ));
 
-  runApp(MyApp());
+  final dummyJsonFuture = rootBundle.loadString('assets/dummy-feed.json');
+
+  final httpClient = MockClient((request) async {
+    await Future.delayed(Duration(seconds: 1));
+    final json = await dummyJsonFuture;
+    return http.Response(json, 200);
+  });
+
+  final feedService = FeedService(httpClient: httpClient);
+  final feedBloc = FeedBloc(feedService: feedService);
+
+  runApp(MyApp(feedBloc));
 }
 
 class MyApp extends StatelessWidget {
+  final FeedBloc feedBloc;
+
+  const MyApp(
+    this.feedBloc,
+  );
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final dummyJsonFuture = DefaultAssetBundle.of(context).loadString('assets/dummy-feed.json');
-
-    final httpClient = MockClient((request) async {
-      final json = await dummyJsonFuture;
-      return http.Response(json, 200);
-    });
-
-    final feedService = FeedService(httpClient: httpClient);
-    final feedBloc = FeedBloc(feedService: feedService);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,

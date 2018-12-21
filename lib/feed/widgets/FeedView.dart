@@ -15,6 +15,7 @@ class FeedView extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return ListView(
+            padding: EdgeInsets.zero,
             children: snapshot.data.map((feedItem) =>
               FeedItemView(feedItem)
             ).toList(),
@@ -22,7 +23,7 @@ class FeedView extends StatelessWidget {
 
         } else {
 
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
 
         }
       },
