@@ -15,6 +15,6 @@ class InheritedFeedBloc extends InheritedWidget {
 
   @override
   bool updateShouldNotify(InheritedFeedBloc old) {
-    return bloc != old.bloc;
+    return true;
   }
 }

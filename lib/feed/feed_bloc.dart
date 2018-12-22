@@ -11,8 +11,11 @@ class FeedBloc {
 
   FeedBloc({@required feedService })
       : _feedService = feedService {
+    refresh();
+  }
 
-    _feedService.getFeed().then((feed) {
+  Future<List<FeedItem>> refresh() async {
+    return _feedService.getFeed().then((feed) {
       _feedSubject.value = feed;
     });
   }

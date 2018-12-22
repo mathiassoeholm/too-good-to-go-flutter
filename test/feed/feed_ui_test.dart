@@ -7,7 +7,7 @@ import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemView.dart';
 import 'package:too_good_to_go/feed/widgets/FeedView.dart';
 
-import 'mocks.dart';
+import '../mocks.dart';
 
 void main() {
   testWidgets('It displays the company name', (WidgetTester tester) async {
@@ -51,8 +51,7 @@ void main() {
 
     streamController.close();
   });
+
+
+
 }
-
-
-// PLAN:
-// 5. Use inherited widget to pass the bloc down to FeedView
