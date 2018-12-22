@@ -10,8 +10,21 @@ class FeedItemView extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Text(item.companyName),
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            Image.network(
+              item.coverImage,
+              height: 120,
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+            Text(item.companyName),
+          ],
+        ),
+      ),
     );
   }
 }
