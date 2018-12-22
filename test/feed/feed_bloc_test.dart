@@ -36,7 +36,7 @@ void main() {
     // Provide other value from now on
     when(mockFeedService.getFeed()).thenAnswer((_) =>
         Future.value([kvicklyItem]));
-    
+
     final oldFeed = await bloc.feed.first;
 
     await bloc.refresh();

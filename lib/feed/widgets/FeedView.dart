@@ -14,11 +14,14 @@ class FeedView extends StatelessWidget {
       stream: feedBloc.feed,
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView(
-            padding: EdgeInsets.zero,
-            children: snapshot.data.map((feedItem) =>
-              FeedItemView(feedItem)
-            ).toList(),
+          return RefreshIndicator(
+            onRefresh: feedBloc.refresh,
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: snapshot.data.map((feedItem) =>
+                FeedItemView(feedItem)
+              ).toList(),
+            ),
           );
 
         } else {

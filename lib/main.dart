@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/testing.dart';
@@ -13,11 +15,13 @@ void main() {
     statusBarColor: Colors.white,
   ));
 
-  final dummyJsonFuture = rootBundle.loadString('assets/dummy-feed.json');
+  final random = Random();
+  final dummyJson1Future = rootBundle.loadString('assets/dummy-feed1.json');
+  final dummyJson2Future = rootBundle.loadString('assets/dummy-feed2.json');
 
   final httpClient = MockClient((request) async {
     await Future.delayed(Duration(seconds: 1));
-    final json = await dummyJsonFuture;
+    final json = await (random.nextBool() ? dummyJson1Future : dummyJson2Future);
     return http.Response(json, 200);
   });
 
