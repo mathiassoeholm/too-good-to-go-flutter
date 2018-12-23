@@ -17,6 +17,8 @@ void main() {
   Location mockLocation;
   FeedBloc bloc;
 
+  final distanceBetweenFaktaAndKvickly = 44.64;
+
   setUp(() {
     faktaItem = FeedItem((b) => b
       ..companyName = 'Fakta'
@@ -68,10 +70,8 @@ void main() {
 
     bloc = FeedBloc(feedService: mockFeedService, location: mockLocation);
 
-    List<double> distances = await bloc.distances.first;
+    List<num> distances = await bloc.distances.first;
     final distanceToFirst = distances[0];
-
-    final distanceBetweenFaktaAndKvickly = 44.64;
     final allowedError = 1;
     
     expect(distanceToFirst, greaterThanOrEqualTo(distanceBetweenFaktaAndKvickly - allowedError));

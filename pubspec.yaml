@@ -13,6 +13,7 @@ environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
+  latlong: ^0.6.1
   location: ^1.4.1
   http: ^0.12.0
   built_value: ^6.2.0
