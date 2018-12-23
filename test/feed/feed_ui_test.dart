@@ -4,6 +4,7 @@ import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemView.dart';
 import 'package:too_good_to_go/feed/widgets/FeedView.dart';
 
@@ -52,6 +53,45 @@ void main() {
     streamController.close();
   });
 
+  testWidgets('Displays distance', (WidgetTester tester) async {
+    final mockBlock = MockFeedBlock();
+
+    final shop400 = FeedItem((b) => b..companyName = 'shop 400m away');
 
 
+    when(mockBlock.distances).thenAnswer((_) =>
+      Stream.fromIterable([{
+        shop400: 400
+      }]));
+
+    await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: FeedItemDistanceText(feedItem: shop400, feedBloc: mockBlock)
+    ));
+
+    // StreamBuilder needs pump before it builds from stream
+    await tester.pump();
+
+    expect(find.text('400 m'), findsOneWidget);
+  });
+
+
+  testWidgets('Displays nothing if distance is unknown', (WidgetTester tester) async {
+    final mockBlock = MockFeedBlock();
+
+    final shopUnknownDistance = FeedItem((b) => b..companyName = 'shop unknown distance');
+
+    when(mockBlock.distances).thenAnswer((_) =>
+        Stream.fromIterable([Map<FeedItem, num>()]));
+
+    await tester.pumpWidget(Directionality(
+        textDirection: TextDirection.ltr,
+        child: FeedItemDistanceText(feedItem: shopUnknownDistance, feedBloc: mockBlock)
+    ));
+
+    // StreamBuilder needs pump before it builds from stream
+    await tester.pump();
+
+    expect(find.byType(Text), findsNothing);
+  });
 }

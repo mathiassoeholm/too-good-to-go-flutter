@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
+import 'package:too_good_to_go/feed/widgets/InheritedFeedBloc.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 
 class FeedItemView extends StatelessWidget {
@@ -27,7 +29,8 @@ class FeedItemView extends StatelessWidget {
               ..add(_buildMainColumn())
               ..addAll(_buildBlackBar())
               ..add(_buildAvatar())
-              ..add(_buildFavoriteButton())),
+              ..add(_buildFavoriteButton())
+              ..add(_buildDistanceDisplay(context))),
       ),
     );
   }
@@ -80,6 +83,18 @@ class FeedItemView extends StatelessWidget {
           ),
         ),
       );
+
+  Widget _buildDistanceDisplay(BuildContext context) {
+    final inheritedFeedBloc = InheritedFeedBloc.of(context);
+
+    return Positioned(
+      top: 0,
+      child: FeedItemDistanceText(
+        feedItem: item,
+        feedBloc: inheritedFeedBloc.bloc,
+      ),
+    );
+  }
 
   Widget _buildAvatar() => Positioned(
         top: (imageHeight - blackBarHeight) - avatarRadius,

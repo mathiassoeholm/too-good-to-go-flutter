@@ -13,7 +13,7 @@ class FeedBloc {
   final _feedSubject = BehaviorSubject<List<FeedItem>>();
 
   Stream<List<FeedItem>> get feed => _feedSubject.stream;
-  Stream<List<num>> get distances => _getDistancesStream();
+  Stream<Map<FeedItem, num>> get distances => _getDistancesStream();
 
   FeedBloc({@required feedService, @required location }) :
     _feedService = feedService,
@@ -28,14 +28,21 @@ class FeedBloc {
     });
   }
 
-  Stream<List<num>> _getDistancesStream() =>
+  Stream<Map<FeedItem, num>> _getDistancesStream() =>
     StreamZip([feed, _location.onLocationChanged()]).map((feedAndLocation) {
-      final feeds = feedAndLocation[0] as List<FeedItem>;
+      final feed = feedAndLocation[0] as List<FeedItem>;
       final location = feedAndLocation[1] as Map<String, double>;
       
       final userLocation = LatLng(location['latitude'], location['longitude']);
-      final feedLocations = feeds.map((f) => LatLng(f.location.lat, f.location.lng));
-      
-      return feedLocations.map((l) => Distance()(userLocation, l)).toList();
+
+      var distances = Map<FeedItem, num>();
+
+      feed.forEach((f) {
+        final itemLocation = LatLng(f.location.lat, f.location.lng);
+        final distance = Distance()(itemLocation, userLocation);
+        distances[f] = distance;
+      });
+
+      return distances;
     });
 }

@@ -27,7 +27,12 @@ void main() {
   });
 
   final feedService = FeedService(httpClient: httpClient);
-  final feedBloc = FeedBloc(feedService: feedService, location: Location());
+  final location = Location();
+
+  // Trigger permission popup
+  location.getLocation();
+
+  final feedBloc = FeedBloc(feedService: feedService, location: location);
 
   runApp(MyApp(feedBloc));
 }

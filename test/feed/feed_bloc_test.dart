@@ -70,11 +70,12 @@ void main() {
 
     bloc = FeedBloc(feedService: mockFeedService, location: mockLocation);
 
-    List<num> distances = await bloc.distances.first;
-    final distanceToFirst = distances[0];
+    Map<FeedItem, num> distances = await bloc.distances.first;
+
+    final distanceToFakta = distances[faktaItem];
+
     final allowedError = 1;
-    
-    expect(distanceToFirst, greaterThanOrEqualTo(distanceBetweenFaktaAndKvickly - allowedError));
-    expect(distanceToFirst, lessThanOrEqualTo(distanceBetweenFaktaAndKvickly + allowedError));
+    expect(distanceToFakta, greaterThanOrEqualTo(distanceBetweenFaktaAndKvickly - allowedError));
+    expect(distanceToFakta, lessThanOrEqualTo(distanceBetweenFaktaAndKvickly + allowedError));
   });
 }
