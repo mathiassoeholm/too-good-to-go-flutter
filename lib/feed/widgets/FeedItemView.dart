@@ -86,7 +86,8 @@ class FeedItemView extends StatelessWidget {
         ),
         Positioned(
           bottom: whiteAreaHeight,
-          left: 5,
+          left: 8,
+          right: 8,
           height: blackBarHeight,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -103,7 +104,16 @@ class FeedItemView extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-              )
+              ),
+              Expanded(
+                child: Text(
+                  '${item.price['dkk']} DKK',
+                  textAlign: TextAlign.right,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ).merge(AppTheme.boldFontMediumSize),
+                ),
+              ),
             ],
           ),
         )
