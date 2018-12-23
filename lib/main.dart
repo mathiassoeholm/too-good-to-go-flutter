@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/testing.dart';
+import 'package:location/location.dart';
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/feed/widgets/InheritedFeedBloc.dart';
@@ -26,7 +27,7 @@ void main() {
   });
 
   final feedService = FeedService(httpClient: httpClient);
-  final feedBloc = FeedBloc(feedService: feedService);
+  final feedBloc = FeedBloc(feedService: feedService, location: Location());
 
   runApp(MyApp(feedBloc));
 }

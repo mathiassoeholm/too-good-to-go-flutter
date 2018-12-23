@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:location/location.dart';
 import "package:test/test.dart";
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
@@ -8,27 +11,36 @@ import '../mocks.dart';
 
 
 void main() {
-  FeedItem foodIncItem;
+  FeedItem faktaItem;
   FeedItem kvicklyItem;
   FeedService mockFeedService;
+  Location mockLocation;
   FeedBloc bloc;
 
   setUp(() {
-    foodIncItem = FeedItem((b) => b..companyName = 'Food Inc.');
-    kvicklyItem = FeedItem((b) => b..companyName = 'Kvickly');
+    faktaItem = FeedItem((b) => b
+      ..companyName = 'Fakta'
+      ..location.lat = 56.4151389
+      ..location.lng = 10.8865822);
+
+    kvicklyItem = FeedItem((b) => b
+      ..companyName = 'Kvickly'
+      ..location.lat = 56.4150613
+      ..location.lng = 10.8872942);
 
     mockFeedService = MockFeedService();
+    mockLocation = MockLocation();
 
     when(mockFeedService.getFeed()).thenAnswer((_) =>
-        Future.value([foodIncItem]));
+        Future.value([faktaItem]));
 
-    bloc = FeedBloc(feedService: mockFeedService);
+    bloc = FeedBloc(feedService: mockFeedService, location: mockLocation);
   });
 
   test('Feed bloc uses feed service', () async {
     final feed = await bloc.feed.first;
 
-    expect(feed.first, equals(foodIncItem));
+    expect(feed.first, equals(faktaItem));
   });
 
   test('Feed bloc refreshes items', () async {
@@ -43,8 +55,26 @@ void main() {
 
     final newFeed = await bloc.feed.first;
 
-    expect(oldFeed.first, equals(foodIncItem));
+    expect(oldFeed.first, equals(faktaItem));
     expect(newFeed.first, equals(kvicklyItem));
 
+  });
+
+  test('Feed bloc calculates distances', () async {
+    when(mockLocation.onLocationChanged()).thenAnswer((_) => Stream.fromIterable([{
+        'latitude': kvicklyItem.location.lat,
+        'longitude': kvicklyItem.location.lng,
+      }]));
+
+    bloc = FeedBloc(feedService: mockFeedService, location: mockLocation);
+
+    List<double> distances = await bloc.distances.first;
+    final distanceToFirst = distances[0];
+
+    final distanceBetweenFaktaAndKvickly = 44.64;
+    final allowedError = 1;
+    
+    expect(distanceToFirst, greaterThanOrEqualTo(distanceBetweenFaktaAndKvickly - allowedError));
+    expect(distanceToFirst, lessThanOrEqualTo(distanceBetweenFaktaAndKvickly + allowedError));
   });
 }
