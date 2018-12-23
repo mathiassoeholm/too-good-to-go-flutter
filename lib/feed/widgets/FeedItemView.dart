@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/shared/theme.dart';
 
 class FeedItemView extends StatelessWidget {
   static const blackBarHeight = 25.0;
+  static const imageHeight = 140.0;
+  static const whiteAreaHeight = 55.0;
 
   final FeedItem item;
 
@@ -17,37 +20,57 @@ class FeedItemView extends StatelessWidget {
       child: Card(
         child: Stack(
           fit: StackFit.loose,
-          children:
-            _buildImage()
-            ..addAll(_buildBlackBar()),
+          children: <Widget>[]
+            ..add(_buildMainColumn())
+            ..addAll(_buildBlackBar())
         ),
       ),
     );
   }
 
-  List<Widget> _buildImage() => [
-    Image.network(
-      item.coverImage,
-      width: double.infinity,
-      height: 140,
-      fit: BoxFit.cover,
-    )
-  ];
+  Widget _buildMainColumn() =>
+    Column(
+      children: <Widget>[
+        _buildImage(),
+        _buildWhiteArea(),
+      ],
+    );
+
+  Widget _buildImage() =>
+      Image.network(
+        item.coverImage,
+        width: double.infinity,
+        height: imageHeight,
+        fit: BoxFit.cover,
+      );
+
+  Widget _buildWhiteArea() =>
+  Container(
+    padding: EdgeInsets.all(6.0),
+    height: whiteAreaHeight,
+    child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Text(item.companyName, style: AppTheme.heavyFontMediumSize),
+        Text('${item.timeStart} - ${item.timeEnd}', style: AppTheme.lightFontSmall),
+      ],
+    ),
+  );
 
   List<Widget> _buildBlackBar() => [
         Positioned(
-          bottom: 0,
+          bottom: whiteAreaHeight,
           height: blackBarHeight,
           left: 0,
           right: 0,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.black.withAlpha(150),
+              color: Colors.black.withAlpha(190),
             ),
           ),
         ),
         Positioned(
-          bottom: 0,
+          bottom: whiteAreaHeight,
           left: 5,
           height: blackBarHeight,
           child: Row(
