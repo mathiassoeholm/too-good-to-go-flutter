@@ -3,10 +3,11 @@ import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 
 class FeedItemView extends StatelessWidget {
-  static const blackBarHeight = 25.0;
+  static const blackBarHeight = 27.0;
   static const imageHeight = 140.0;
   static const whiteAreaHeight = 58.0;
   static const avatarRadius = 38.0;
+  static const blackOverlayColor = Color.fromARGB(190, 0, 0, 0);
 
   final FeedItem item;
 
@@ -25,7 +26,8 @@ class FeedItemView extends StatelessWidget {
             children: <Widget>[]
               ..add(_buildMainColumn())
               ..addAll(_buildBlackBar())
-              ..add(_buildAvatar())),
+              ..add(_buildAvatar())
+              ..add(_buildFavoriteButton())),
       ),
     );
   }
@@ -57,6 +59,28 @@ class FeedItemView extends StatelessWidget {
         ),
       );
 
+  Widget _buildFavoriteButton() => Positioned(
+        right: 0,
+        top: 10,
+        height: blackBarHeight,
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 6.0),
+          decoration: BoxDecoration(
+            color: blackOverlayColor,
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Icon(Icons.favorite, color: Colors.white, size: 22),
+              Text('${item.favorites}',
+                style: TextStyle(
+                  color: Colors.white
+                ).merge(AppTheme.boldFontSmallSize))
+            ],
+          ),
+        ),
+      );
+
   Widget _buildAvatar() => Positioned(
         top: (imageHeight - blackBarHeight) - avatarRadius,
         right: 0,
@@ -80,7 +104,7 @@ class FeedItemView extends StatelessWidget {
           right: 0,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: Colors.black.withAlpha(190),
+              color: blackOverlayColor,
             ),
           ),
         ),

@@ -25,9 +25,7 @@ class FeedView extends StatelessWidget {
           );
 
         } else {
-
           return Center(child: CircularProgressIndicator());
-
         }
       },
     );
