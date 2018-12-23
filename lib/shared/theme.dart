@@ -19,7 +19,7 @@ class AppTheme {
   );
 
   static const TextStyle lightFontSmall = TextStyle(
-      fontSize: 13,
+      fontSize: 12,
       color: Colors.black45,
   );
 }

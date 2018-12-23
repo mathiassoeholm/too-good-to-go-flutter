@@ -5,7 +5,8 @@ import 'package:too_good_to_go/shared/theme.dart';
 class FeedItemView extends StatelessWidget {
   static const blackBarHeight = 25.0;
   static const imageHeight = 140.0;
-  static const whiteAreaHeight = 55.0;
+  static const whiteAreaHeight = 58.0;
+  static const avatarRadius = 38.0;
 
   final FeedItem item;
 
@@ -18,44 +19,58 @@ class FeedItemView extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
       child: Card(
+        elevation: 2.0,
         child: Stack(
-          fit: StackFit.loose,
-          children: <Widget>[]
-            ..add(_buildMainColumn())
-            ..addAll(_buildBlackBar())
-        ),
+            fit: StackFit.loose,
+            children: <Widget>[]
+              ..add(_buildMainColumn())
+              ..addAll(_buildBlackBar())
+              ..add(_buildAvatar())),
       ),
     );
   }
 
-  Widget _buildMainColumn() =>
-    Column(
-      children: <Widget>[
-        _buildImage(),
-        _buildWhiteArea(),
-      ],
-    );
+  Widget _buildMainColumn() => Column(
+        children: <Widget>[
+          _buildImage(),
+          _buildWhiteArea(),
+        ],
+      );
 
-  Widget _buildImage() =>
-      Image.network(
+  Widget _buildImage() => Image.network(
         item.coverImage,
         width: double.infinity,
         height: imageHeight,
         fit: BoxFit.cover,
       );
 
-  Widget _buildWhiteArea() =>
-  Container(
-    padding: EdgeInsets.all(6.0),
-    height: whiteAreaHeight,
-    child: Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
-      children: <Widget>[
-        Text(item.companyName, style: AppTheme.heavyFontMediumSize),
-        Text('${item.timeStart} - ${item.timeEnd}', style: AppTheme.lightFontSmall),
-      ],
-    ),
-  );
+  Widget _buildWhiteArea() => Container(
+        padding: EdgeInsets.fromLTRB(0, 12, 0, 5),
+        height: whiteAreaHeight,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: <Widget>[
+            Text(item.companyName, style: AppTheme.heavyFontMediumSize),
+            Text('${item.timeStart} - ${item.timeEnd}',
+                style: AppTheme.lightFontSmall),
+          ],
+        ),
+      );
+
+  Widget _buildAvatar() => Positioned(
+        top: (imageHeight - blackBarHeight) - avatarRadius,
+        right: 0,
+        left: 0,
+        child: Container(
+            width: avatarRadius * 2,
+            height: avatarRadius * 2,
+            decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.white,
+                border: Border.all(
+                    width: 2.0, color: Color.fromARGB(255, 210, 210, 210))),
+            child: Image.network(item.avatarImage)),
+      );
 
   List<Widget> _buildBlackBar() => [
         Positioned(
