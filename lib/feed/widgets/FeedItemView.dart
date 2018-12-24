@@ -88,10 +88,22 @@ class FeedItemView extends StatelessWidget {
     final inheritedFeedBloc = InheritedFeedBloc.of(context);
 
     return Positioned(
-      top: 0,
-      child: FeedItemDistanceText(
-        feedItem: item,
-        feedBloc: inheritedFeedBloc.bloc,
+      top: 10,
+      height: blackBarHeight,
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 6.0),
+        decoration: BoxDecoration(
+          color: blackOverlayColor
+        ),
+        child: Center(
+          child: FeedItemDistanceText(
+            feedItem: item,
+            feedBloc: inheritedFeedBloc.bloc,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }

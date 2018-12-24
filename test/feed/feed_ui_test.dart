@@ -57,22 +57,37 @@ void main() {
     final mockBlock = MockFeedBlock();
 
     final shop400 = FeedItem((b) => b..companyName = 'shop 400m away');
-
+    final shop500 = FeedItem((b) => b..companyName = 'shop 500m away');
+    final shop1200 = FeedItem((b) => b..companyName = 'shop 1200m away');
+    final shop100000 = FeedItem((b) => b..companyName = 'shop 100.000m away');
 
     when(mockBlock.distances).thenAnswer((_) =>
       Stream.fromIterable([{
-        shop400: 400
+        shop400: 400.12,
+        shop500: 499.999,
+        shop1200: 1210,
+        shop100000: 100000,
       }]));
 
     await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
-        child: FeedItemDistanceText(feedItem: shop400, feedBloc: mockBlock)
+        child: Column(
+          children: <Widget>[
+            FeedItemDistanceText(feedItem: shop400, feedBloc: mockBlock),
+            FeedItemDistanceText(feedItem: shop500, feedBloc: mockBlock),
+            FeedItemDistanceText(feedItem: shop1200, feedBloc: mockBlock),
+            FeedItemDistanceText(feedItem: shop100000, feedBloc: mockBlock),
+          ],
+        )
     ));
 
     // StreamBuilder needs pump before it builds from stream
     await tester.pump();
 
     expect(find.text('400 m'), findsOneWidget);
+    expect(find.text('500 m'), findsOneWidget);
+    expect(find.text('1.2 km'), findsOneWidget);
+    expect(find.text('100 km'), findsOneWidget);
   });
 
 
