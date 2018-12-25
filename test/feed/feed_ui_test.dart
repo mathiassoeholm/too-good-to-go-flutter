@@ -3,6 +3,7 @@ import 'package:mockito/mockito.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
+import 'package:too_good_to_go/feed/widgets/DetailsView.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemView.dart';
@@ -12,12 +13,20 @@ import '../mocks.dart';
 import '../utilities/test_utilites.dart';
 
 void main() {
-  testWidgets('It displays the company name', (WidgetTester tester) async {
-    final item = FeedItem((b) => b..companyName = 'Food Inc.');
+  testWidgets('FeedItemView displays the company name', (WidgetTester tester) async {
+    final item = FeedItem((b) => b
+      ..companyName = 'Food Inc.'
+      ..price['dkk'] = 45
+      ..favorites = 500
+      ..timeStart = '12:00'
+      ..timeEnd = '13:35');
 
     await tester.pumpWidget(MaterialApp(home: FeedItemView(item)));
 
     expect(find.text('Food Inc.'), findsOneWidget);
+    expect(find.text('45 DKK'), findsOneWidget);
+    expect(find.text('500'), findsOneWidget);
+    expect(find.text('12:00 - 13:35'), findsOneWidget);
   });
 
   testWidgets('Feed List Widget', (WidgetTester tester) async {

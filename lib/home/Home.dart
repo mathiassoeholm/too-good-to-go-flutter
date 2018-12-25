@@ -5,10 +5,6 @@ import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/widgets/TgtgAppbar.dart';
 
 class Home extends StatelessWidget {
-  const Home({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final feedBloc = BlocProvider.of<FeedBloc>(context);

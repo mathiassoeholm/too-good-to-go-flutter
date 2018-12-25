@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Too Good To Go',
       theme: getTheme(),
-      home: BlocProvider<FeedBloc>(
+      home: BlocProvider(
           bloc: feedBloc,
           child: Home()),
     );

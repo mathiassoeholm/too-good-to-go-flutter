@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:too_good_to_go/feed/widgets/DetailsView.dart';
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemView.dart';
@@ -19,7 +20,7 @@ class FeedView extends StatelessWidget {
             child: ListView(
               padding: EdgeInsets.zero,
               children: snapshot.data.map((feedItem) =>
-                FeedItemView(feedItem)
+                _buildFeedItemView(context, feedItem)
               ).toList(),
             ),
           );
@@ -28,5 +29,13 @@ class FeedView extends StatelessWidget {
           return Center(child: CircularProgressIndicator());
         }
       },
+    );
+
+  Widget _buildFeedItemView(BuildContext context, FeedItem feedItem) =>
+    FeedItemView(feedItem,
+      onPressed: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => DetailsView(feedItem))
+      )
     );
 }

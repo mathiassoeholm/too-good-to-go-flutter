@@ -1,6 +1,7 @@
 import 'package:async/async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:latlong/latlong.dart';
+import 'package:location/location.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:rxdart/rxdart.dart';
@@ -9,15 +10,18 @@ import 'package:too_good_to_go/shared/bloc_provider.dart';
 class FeedBloc implements BlocBase {
   final FeedService _feedService;
 
-  final _feedSubject = BehaviorSubject<List<FeedItem>>();
-  final _locationSubject = BehaviorSubject<Map<String, double>>();
-
   Stream<List<FeedItem>> get feed => _feedSubject.stream;
-  Stream<Map<FeedItem, num>> get distances => _getDistancesStream();
+  final _feedSubject = BehaviorSubject<List<FeedItem>>();
 
   Stream<Map<String, double>> get _location => _locationSubject.stream;
+  final _locationSubject = BehaviorSubject<Map<String, double>>();
 
-  FeedBloc({@required feedService, @required location }) :
+  Stream<Map<FeedItem, num>> get distances => _getDistancesStream();
+
+  FeedBloc({
+    @required FeedService feedService,
+    @required Location location,
+  }) :
     _feedService = feedService
   {
     location.onLocationChanged()?.listen((event) {
