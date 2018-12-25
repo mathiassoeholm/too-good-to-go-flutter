@@ -3,6 +3,7 @@ import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
 import 'package:too_good_to_go/feed/widgets/InheritedFeedBloc.dart';
 import 'package:too_good_to_go/shared/theme.dart';
+import 'package:too_good_to_go/shared/utilities/list_util.dart';
 
 class FeedItemView extends StatelessWidget {
   static const blackBarHeight = 27.0;
@@ -12,27 +13,31 @@ class FeedItemView extends StatelessWidget {
   static const blackOverlayColor = Color.fromARGB(190, 0, 0, 0);
 
   final FeedItem item;
+  final VoidCallback onPressed;
 
-  const FeedItemView(
-    this.item,
+  const FeedItemView(this.item, {
+      this.onPressed,
+    }
   );
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
-      child: Card(
-        elevation: 2.0,
-        child: Stack(
-            fit: StackFit.loose,
-            children: (<Widget>[]
-                ..add(_buildMainColumn())
-                ..addAll(_buildBlackBar())
-                ..add(_buildAvatar())
-                ..add(_buildFavoriteButton())
-                ..add(_buildDistanceDisplay(context))
-              ).where((w) => w != null)
-              .toList()
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Card(
+          elevation: 2.0,
+          child: Stack(
+              fit: StackFit.loose,
+              children: ListUtil.notNullWidgets([]
+                  ..add(_buildMainColumn())
+                  ..addAll(_buildBlackBar())
+                  ..add(_buildAvatar())
+                  ..add(_buildFavoriteButton())
+                  ..add(_buildDistanceDisplay(context))
+                )
+          ),
         ),
       ),
     );
@@ -63,35 +68,41 @@ class FeedItemView extends StatelessWidget {
         height: whiteAreaHeight,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: <Widget>[
-            Text(item.companyName, style: AppTheme.heavyFontMediumSize),
-            Text('${item.timeStart} - ${item.timeEnd}',
+          children: ListUtil.notNullWidgets([
+            item.companyName == null ? null :
+              Text(item.companyName, style: AppTheme.heavyFontMediumSize),
+
+            (item.timeStart ?? item.timeEnd) == null ? null :
+              Text('${item.timeStart} - ${item.timeEnd}',
                 style: AppTheme.lightFontSmall),
-          ],
+
+          ]),
         ),
       );
 
-  Widget _buildFavoriteButton() => Positioned(
-        right: 0,
-        top: 10,
-        height: blackBarHeight,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 6.0),
-          decoration: BoxDecoration(
-            color: blackOverlayColor,
+  Widget _buildFavoriteButton() =>
+      item.favorites == null ? null :
+        Positioned(
+          right: 0,
+          top: 10,
+          height: blackBarHeight,
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 6.0),
+            decoration: BoxDecoration(
+              color: blackOverlayColor,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Icon(Icons.favorite, color: Colors.white, size: 22),
+                Text('${item.favorites}',
+                  style: TextStyle(
+                    color: Colors.white
+                  ).merge(AppTheme.boldFontSmallSize))
+              ],
+            ),
           ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Icon(Icons.favorite, color: Colors.white, size: 22),
-              Text('${item.favorites}',
-                style: TextStyle(
-                  color: Colors.white
-                ).merge(AppTheme.boldFontSmallSize))
-            ],
-          ),
-        ),
-      );
+        );
 
   Widget _buildDistanceDisplay(BuildContext context) {
     final inheritedFeedBloc = InheritedFeedBloc.of(context);
@@ -154,30 +165,32 @@ class FeedItemView extends StatelessWidget {
           height: blackBarHeight,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
+            children: ListUtil.notNullWidgets([
               CircleAvatar(
                 backgroundColor: Colors.green,
                 radius: 9,
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: Text(
-                  '${item.itemsLeft} left',
-                  style: TextStyle(
-                    color: Colors.white,
+              item.itemsLeft == null ? null :
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Text(
+                    '${item.itemsLeft} left',
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              Expanded(
-                child: Text(
-                  '${item.price == null ? '?' : (item.price['dkk'] ?? '?')} DKK',
-                  textAlign: TextAlign.right,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ).merge(AppTheme.boldFontMediumSize),
+              item.price == null || !item.price.containsKey('dkk') ? null :
+                Expanded(
+                  child: Text(
+                    '${(item.price['dkk'])} DKK',
+                    textAlign: TextAlign.right,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ).merge(AppTheme.boldFontMediumSize),
+                  ),
                 ),
-              ),
-            ],
+            ]),
           ),
         )
       ];

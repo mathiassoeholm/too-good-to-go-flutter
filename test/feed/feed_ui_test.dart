@@ -9,29 +9,25 @@ import 'package:too_good_to_go/feed/widgets/FeedItemView.dart';
 import 'package:too_good_to_go/feed/widgets/FeedView.dart';
 
 import '../mocks.dart';
+import '../utilities/test_utilites.dart';
 
 void main() {
   testWidgets('It displays the company name', (WidgetTester tester) async {
     final item = FeedItem((b) => b..companyName = 'Food Inc.');
 
-    await tester.pumpWidget(MaterialApp(
-        home: FeedItemView(item)));
+    await tester.pumpWidget(MaterialApp(home: FeedItemView(item)));
 
     expect(find.text('Food Inc.'), findsOneWidget);
   });
 
   testWidgets('Feed List Widget', (WidgetTester tester) async {
-
     final streamController = StreamController<List<FeedItem>>();
 
-    final mockBlock = MockFeedBlock();
+    final mockBlock = MockFeedBloc();
 
-    when(mockBlock.feed).thenAnswer((_) =>
-      streamController.stream);
+    when(mockBlock.feed).thenAnswer((_) => streamController.stream);
 
-    await tester.pumpWidget(MaterialApp(
-          home: FeedView(feedBloc: mockBlock)
-      ));
+    await tester.pumpWidget(MaterialApp(home: FeedView(feedBloc: mockBlock)));
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
 
@@ -47,26 +43,28 @@ void main() {
     final listView = find.byType(ListView);
 
     expect(listView, findsOneWidget);
-    expect(find.descendant(of: listView, matching: find.byType(FeedItemView)), findsNWidgets(2));
+    expect(find.descendant(of: listView, matching: find.byType(FeedItemView)),
+        findsNWidgets(2));
 
     streamController.close();
   });
 
   testWidgets('Displays distance', (WidgetTester tester) async {
-    final mockBlock = MockFeedBlock();
+    final mockBlock = MockFeedBloc();
 
     final shop400 = FeedItem((b) => b..companyName = 'shop 400m away');
     final shop500 = FeedItem((b) => b..companyName = 'shop 500m away');
     final shop1200 = FeedItem((b) => b..companyName = 'shop 1200m away');
     final shop100000 = FeedItem((b) => b..companyName = 'shop 100.000m away');
 
-    when(mockBlock.distances).thenAnswer((_) =>
-      Stream.fromIterable([{
-        shop400: 400.12,
-        shop500: 499.999,
-        shop1200: 1210,
-        shop100000: 100000,
-      }]));
+    when(mockBlock.distances).thenAnswer((_) => Stream.fromIterable([
+          {
+            shop400: 400.12,
+            shop500: 499.999,
+            shop1200: 1210,
+            shop100000: 100000,
+          }
+        ]));
 
     await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
@@ -77,8 +75,7 @@ void main() {
             FeedItemDistanceText(feedItem: shop1200, feedBloc: mockBlock),
             FeedItemDistanceText(feedItem: shop100000, feedBloc: mockBlock),
           ],
-        )
-    ));
+        )));
 
     // StreamBuilder needs pump before it builds from stream
     await tester.pump();
@@ -89,23 +86,51 @@ void main() {
     expect(find.text('100 km'), findsOneWidget);
   });
 
+  testWidgets('Displays nothing if distance is unknown',
+      (WidgetTester tester) async {
+    final mockBlock = MockFeedBloc();
 
-  testWidgets('Displays nothing if distance is unknown', (WidgetTester tester) async {
-    final mockBlock = MockFeedBlock();
+    final shopUnknownDistance =
+        FeedItem((b) => b..companyName = 'shop unknown distance');
 
-    final shopUnknownDistance = FeedItem((b) => b..companyName = 'shop unknown distance');
-
-    when(mockBlock.distances).thenAnswer((_) =>
-        Stream.fromIterable([Map<FeedItem, num>()]));
+    when(mockBlock.distances)
+        .thenAnswer((_) => Stream.fromIterable([Map<FeedItem, num>()]));
 
     await tester.pumpWidget(Directionality(
         textDirection: TextDirection.ltr,
-        child: FeedItemDistanceText(feedItem: shopUnknownDistance, feedBloc: mockBlock)
-    ));
+        child: FeedItemDistanceText(
+            feedItem: shopUnknownDistance, feedBloc: mockBlock)));
 
     // StreamBuilder needs pump before it builds from stream
     await tester.pump();
 
     expect(find.byType(Text), findsNothing);
   });
+
+  testWidgets('It navigates to /details when pressing feed item',
+    (WidgetTester tester) async
+  {
+
+  });
+
+  testWidgets('It never writes null', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home: FeedItemView(FeedItem())));
+
+    expectNoTextToContainNull();
+  });
+
+  testWidgets('It checks if dkk is in the map ', (WidgetTester tester) async {
+    await tester.pumpWidget(MaterialApp(home:
+      FeedItemView(
+          FeedItem((b) => b
+            ..price['usd'] = 44
+            ..price['eur'] = 32)
+          )
+        )
+      );
+
+    expectNoTextToContainNull();
+  });
 }
+
+

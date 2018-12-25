@@ -8,7 +8,7 @@ import 'mocks.dart';
 void main() {
   testWidgets('The title is displayed', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(MyApp(MockFeedBlock()));
+    await tester.pumpWidget(MyApp(MockFeedBloc()));
 
     expect(find.text("Too Good To Go"), findsOneWidget);
   });

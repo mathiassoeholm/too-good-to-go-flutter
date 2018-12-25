@@ -4,5 +4,5 @@ import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:location/location.dart';
 
 class MockFeedService extends Mock implements FeedService { }
-class MockFeedBlock extends Mock implements FeedBloc { }
+class MockFeedBloc extends Mock implements FeedBloc { }
 class MockLocation extends Mock implements Location {}
