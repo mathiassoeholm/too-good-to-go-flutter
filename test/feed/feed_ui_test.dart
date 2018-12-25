@@ -14,8 +14,8 @@ void main() {
   testWidgets('It displays the company name', (WidgetTester tester) async {
     final item = FeedItem((b) => b..companyName = 'Food Inc.');
 
-    await tester.pumpWidget(Directionality(
-        textDirection: TextDirection.ltr, child: FeedItemView(item)));
+    await tester.pumpWidget(MaterialApp(
+        home: FeedItemView(item)));
 
     expect(find.text('Food Inc.'), findsOneWidget);
   });
@@ -29,10 +29,9 @@ void main() {
     when(mockBlock.feed).thenAnswer((_) =>
       streamController.stream);
 
-    await tester.pumpWidget(Directionality(
-        textDirection: TextDirection.ltr,
-        child: FeedView(feedBloc: mockBlock)
-    ));
+    await tester.pumpWidget(MaterialApp(
+          home: FeedView(feedBloc: mockBlock)
+      ));
 
     expect(find.byType(CircularProgressIndicator), findsOneWidget);
 

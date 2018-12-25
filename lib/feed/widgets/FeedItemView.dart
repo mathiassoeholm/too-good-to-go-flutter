@@ -25,12 +25,15 @@ class FeedItemView extends StatelessWidget {
         elevation: 2.0,
         child: Stack(
             fit: StackFit.loose,
-            children: <Widget>[]
-              ..add(_buildMainColumn())
-              ..addAll(_buildBlackBar())
-              ..add(_buildAvatar())
-              ..add(_buildFavoriteButton())
-              ..add(_buildDistanceDisplay(context))),
+            children: (<Widget>[]
+                ..add(_buildMainColumn())
+                ..addAll(_buildBlackBar())
+                ..add(_buildAvatar())
+                ..add(_buildFavoriteButton())
+                ..add(_buildDistanceDisplay(context))
+              ).where((w) => w != null)
+              .toList()
+        ),
       ),
     );
   }
@@ -42,12 +45,18 @@ class FeedItemView extends StatelessWidget {
         ],
       );
 
-  Widget _buildImage() => Image.network(
-        item.coverImage,
-        width: double.infinity,
-        height: imageHeight,
-        fit: BoxFit.cover,
-      );
+  Widget _buildImage() =>
+    item.coverImage != null ?
+        Image.network(
+          item.coverImage,
+          width: double.infinity,
+          height: imageHeight,
+          fit: BoxFit.cover,
+        ) :
+        Container(
+          width: double.infinity,
+          height: imageHeight,
+        );
 
   Widget _buildWhiteArea() => Container(
         padding: EdgeInsets.fromLTRB(0, 12, 0, 5),
@@ -87,7 +96,8 @@ class FeedItemView extends StatelessWidget {
   Widget _buildDistanceDisplay(BuildContext context) {
     final inheritedFeedBloc = InheritedFeedBloc.of(context);
 
-    return Positioned(
+    return inheritedFeedBloc == null ? null :
+      Positioned(
       top: 10,
       height: blackBarHeight,
       child: Container(
@@ -108,7 +118,9 @@ class FeedItemView extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar() => Positioned(
+  Widget _buildAvatar() =>
+    item.avatarImage == null ? null :
+      Positioned(
         top: (imageHeight - blackBarHeight) - avatarRadius,
         right: 0,
         left: 0,
@@ -158,7 +170,7 @@ class FeedItemView extends StatelessWidget {
               ),
               Expanded(
                 child: Text(
-                  '${item.price['dkk']} DKK',
+                  '${item.price == null ? '?' : (item.price['dkk'] ?? '?')} DKK',
                   textAlign: TextAlign.right,
                   style: TextStyle(
                     color: Colors.white,

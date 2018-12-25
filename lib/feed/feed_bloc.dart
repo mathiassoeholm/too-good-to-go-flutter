@@ -8,17 +8,22 @@ import 'package:rxdart/rxdart.dart';
 
 class FeedBloc {
   final FeedService _feedService;
-  final Location _location;
 
   final _feedSubject = BehaviorSubject<List<FeedItem>>();
+  final _locationSubject = BehaviorSubject<Map<String, double>>();
 
   Stream<List<FeedItem>> get feed => _feedSubject.stream;
   Stream<Map<FeedItem, num>> get distances => _getDistancesStream();
 
+  Stream<Map<String, double>> get _location => _locationSubject.stream;
+
   FeedBloc({@required feedService, @required location }) :
-    _feedService = feedService,
-    _location = location
+    _feedService = feedService
   {
+    location.onLocationChanged()?.listen((event) {
+      _locationSubject.add(event);
+    });
+
     refresh();
   }
 
@@ -29,7 +34,7 @@ class FeedBloc {
   }
 
   Stream<Map<FeedItem, num>> _getDistancesStream() =>
-    StreamZip([feed, _location.onLocationChanged()]).map((feedAndLocation) {
+    StreamZip([feed, _location]).map((feedAndLocation) {
       final feed = feedAndLocation[0] as List<FeedItem>;
       final location = feedAndLocation[1] as Map<String, double>;
       
