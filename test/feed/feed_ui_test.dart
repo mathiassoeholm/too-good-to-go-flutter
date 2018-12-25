@@ -107,10 +107,29 @@ void main() {
     expect(find.byType(Text), findsNothing);
   });
 
-  testWidgets('It navigates to /details when pressing feed item',
+  testWidgets('It navigates to DetailsPage when pressing feed item',
     (WidgetTester tester) async
   {
+    final item = FeedItem((b) => b..companyName = 'Food Inc.');
+    final mockBlock = MockFeedBloc();
 
+    when(mockBlock.feed).thenAnswer((_) =>
+      Stream.fromIterable([
+        [item]
+      ]));
+
+    await tester.pumpWidget(MaterialApp(home: FeedView(feedBloc: mockBlock)));
+
+    // StreamBuilder needs another pump
+    await tester.pump();
+
+    // Simulate press
+    (find.byType(FeedItemView).evaluate().first.widget as FeedItemView).onPressed();
+
+    await tester.pumpAndSettle();
+
+    expect(find.byType(FeedView), findsNothing);
+    expect(find.byType(DetailsView), findsOneWidget);
   });
 
   testWidgets('It never writes null', (WidgetTester tester) async {

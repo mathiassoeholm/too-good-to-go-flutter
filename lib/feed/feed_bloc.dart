@@ -1,7 +1,6 @@
 import 'package:async/async.dart';
 import 'package:flutter/foundation.dart';
 import 'package:latlong/latlong.dart';
-import 'package:location/location.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:rxdart/rxdart.dart';
