@@ -6,7 +6,7 @@ import 'package:http/testing.dart';
 import 'package:location/location.dart';
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
-import 'package:too_good_to_go/feed/widgets/InheritedFeedBloc.dart';
+import 'package:too_good_to_go/shared/bloc_provider.dart';
 import './shared/theme.dart';
 import './home/Home.dart';
 import 'package:http/http.dart' as http;
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Too Good To Go',
       theme: getTheme(),
-      home: InheritedFeedBloc(
+      home: BlocProvider<FeedBloc>(
           bloc: feedBloc,
           child: Home()),
     );

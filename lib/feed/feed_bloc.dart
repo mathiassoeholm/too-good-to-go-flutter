@@ -4,8 +4,9 @@ import 'package:latlong/latlong.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:too_good_to_go/shared/bloc_provider.dart';
 
-class FeedBloc {
+class FeedBloc implements BlocBase {
   final FeedService _feedService;
 
   final _feedSubject = BehaviorSubject<List<FeedItem>>();
@@ -49,4 +50,10 @@ class FeedBloc {
 
       return distances;
     });
+
+  @override
+  void dispose() {
+    _feedSubject.close();
+    _locationSubject.close();
+  }
 }

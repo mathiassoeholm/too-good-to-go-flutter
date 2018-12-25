@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
-import 'package:too_good_to_go/feed/widgets/InheritedFeedBloc.dart';
+import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
 
@@ -105,9 +106,9 @@ class FeedItemView extends StatelessWidget {
         );
 
   Widget _buildDistanceDisplay(BuildContext context) {
-    final inheritedFeedBloc = InheritedFeedBloc.of(context);
+    final feedBloc = BlocProvider.of<FeedBloc>(context);
 
-    return inheritedFeedBloc == null ? null :
+    return feedBloc == null ? null :
       Positioned(
       top: 10,
       height: blackBarHeight,
@@ -119,7 +120,7 @@ class FeedItemView extends StatelessWidget {
         child: Center(
           child: FeedItemDistanceText(
             feedItem: item,
-            feedBloc: inheritedFeedBloc.bloc,
+            feedBloc: feedBloc,
             style: TextStyle(
               color: Colors.white,
             ),
