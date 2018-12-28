@@ -94,6 +94,10 @@ class DetailsView extends StatelessWidget {
   }
 
   Widget _buildCompanyName() {
+    if (feedItem.companyName == null) {
+      return null;
+    }
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(15.0, 0.0, 15.0, 15.0),
       child: Text(feedItem.companyName,
