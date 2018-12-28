@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:too_good_to_go/feed/widgets/DetailsView.dart';
+import 'package:too_good_to_go/feed/widgets/details_view.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import '../utilities/test_utilites.dart';
 

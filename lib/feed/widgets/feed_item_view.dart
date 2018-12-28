@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
-import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
+import 'package:too_good_to_go/feed/widgets/feed_item_distance_text.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
 import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/theme.dart';

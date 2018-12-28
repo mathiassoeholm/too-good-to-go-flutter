@@ -3,11 +3,11 @@ import 'package:mockito/mockito.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:too_good_to_go/feed/widgets/DetailsView.dart';
+import 'package:too_good_to_go/feed/widgets/details_view.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
-import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
-import 'package:too_good_to_go/feed/widgets/FeedItemView.dart';
-import 'package:too_good_to_go/feed/widgets/FeedView.dart';
+import 'package:too_good_to_go/feed/widgets/feed_item_distance_text.dart';
+import 'package:too_good_to_go/feed/widgets/feed_item_view.dart';
+import 'package:too_good_to_go/feed/widgets/feed_view.dart';
 
 import '../mocks.dart';
 import '../utilities/test_utilites.dart';

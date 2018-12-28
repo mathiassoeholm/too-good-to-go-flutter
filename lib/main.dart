@@ -8,7 +8,7 @@ import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/shared/bloc_provider.dart';
 import './shared/theme.dart';
-import './home/Home.dart';
+import 'package:too_good_to_go/home/widgets/home.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
