@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/FeedItemDistanceText.dart';
+import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
 import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
@@ -10,7 +11,6 @@ class FeedItemView extends StatelessWidget {
   static const blackBarHeight = 27.0;
   static const imageHeight = 140.0;
   static const whiteAreaHeight = 58.0;
-  static const avatarRadius = 38.0;
   static const blackOverlayColor = Color.fromARGB(190, 0, 0, 0);
 
   final FeedItem item;
@@ -133,18 +133,10 @@ class FeedItemView extends StatelessWidget {
   Widget _buildAvatar() =>
     item.avatarImage == null ? null :
       Positioned(
-        top: (imageHeight - blackBarHeight) - avatarRadius,
+        top: (imageHeight - blackBarHeight) - CompanyAvatar.radius,
         right: 0,
         left: 0,
-        child: Container(
-            width: avatarRadius * 2,
-            height: avatarRadius * 2,
-            decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-                border: Border.all(
-                    width: 2.0, color: Color.fromARGB(255, 210, 210, 210))),
-            child: Image.network(item.avatarImage)),
+        child: CompanyAvatar(src: item.avatarImage)
       );
 
   List<Widget> _buildBlackBar() => [
