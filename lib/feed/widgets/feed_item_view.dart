@@ -27,7 +27,7 @@ class FeedItemView extends StatefulWidget {
 }
 
 class FeedItemViewState extends State<FeedItemView> {
-  Color _overlayColor = Color.fromARGB(0, 0, 0, 0);
+  bool _isPressing = false;
 
   @override
   Widget build(BuildContext context) {
@@ -35,19 +35,13 @@ class FeedItemViewState extends State<FeedItemView> {
       padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
       child: GestureDetector(
         onTapDown: (_) {
-          setState(() {
-            _overlayColor = Color.fromARGB(100, 0, 0, 0);
-          });
+          setState(() { _isPressing = true; });
         },
         onTapUp: (_) {
-          setState(() {
-            _overlayColor = Color.fromARGB(0, 0, 0, 0);
-          });
+          setState(() { _isPressing = false; });
         },
         onTapCancel: () {
-          setState(() {
-            _overlayColor = Color.fromARGB(0, 0, 0, 0);
-          });
+          setState(() { _isPressing = false; });
         },
         onTap: widget.onPressed,
         child: Card(
@@ -77,13 +71,10 @@ class FeedItemViewState extends State<FeedItemView> {
 
   Widget _buildColorOverlay() {
     return Positioned(
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
+      top: 0, left: 0, right: 0, bottom: 0,
       child: Container(
         decoration: BoxDecoration(
-          color: _overlayColor
+          color: _isPressing ? Color.fromARGB(80, 0, 0, 0) : Color.fromARGB(0, 0, 0, 0)
         ),
       ),
     );
