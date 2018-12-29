@@ -17,11 +17,12 @@ class FeedView extends StatelessWidget {
         if (snapshot.hasData) {
           return RefreshIndicator(
             onRefresh: feedBloc.refresh,
-            child: ListView(
+            child: ListView.builder(
               padding: EdgeInsets.zero,
-              children: snapshot.data.map((feedItem) =>
-                _buildFeedItemView(context, feedItem)
-              ).toList(),
+              itemCount: snapshot.data.length,
+              itemBuilder: (context, index) {
+                return _buildFeedItemView(context, snapshot.data[index]);
+              },
             ),
           );
 
