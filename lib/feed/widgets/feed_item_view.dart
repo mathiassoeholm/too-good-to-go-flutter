@@ -7,11 +7,10 @@ import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
 
-class FeedItemView extends StatelessWidget {
+class FeedItemView extends StatefulWidget {
   static const blackBarHeight = 27.0;
   static const imageHeight = 140.0;
   static const whiteAreaHeight = 58.0;
-  static const blackOverlayColor = Color.fromARGB(190, 0, 0, 0);
 
   final FeedItem item;
   final VoidCallback onPressed;
@@ -22,11 +21,35 @@ class FeedItemView extends StatelessWidget {
   );
 
   @override
+  FeedItemViewState createState() {
+    return new FeedItemViewState();
+  }
+}
+
+class FeedItemViewState extends State<FeedItemView> {
+  Color _overlayColor = Color.fromARGB(0, 0, 0, 0);
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(12, 5, 12, 5),
       child: GestureDetector(
-        onTap: onPressed,
+        onTapDown: (_) {
+          setState(() {
+            _overlayColor = Color.fromARGB(100, 0, 0, 0);
+          });
+        },
+        onTapUp: (_) {
+          setState(() {
+            _overlayColor = Color.fromARGB(0, 0, 0, 0);
+          });
+        },
+        onTapCancel: () {
+          setState(() {
+            _overlayColor = Color.fromARGB(0, 0, 0, 0);
+          });
+        },
+        onTap: widget.onPressed,
         child: Card(
           elevation: 2.0,
           child: Stack(
@@ -37,6 +60,7 @@ class FeedItemView extends StatelessWidget {
                   ..add(_buildAvatar())
                   ..add(_buildFavoriteButton())
                   ..add(_buildDistanceDisplay(context))
+                  ..add(_buildColorOverlay())
                 )
           ),
         ),
@@ -51,30 +75,44 @@ class FeedItemView extends StatelessWidget {
         ],
       );
 
+  Widget _buildColorOverlay() {
+    return Positioned(
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: Container(
+        decoration: BoxDecoration(
+          color: _overlayColor
+        ),
+      ),
+    );
+  }
+
   Widget _buildImage() =>
-    item.coverImage != null ?
+    widget.item.coverImage != null ?
         Image.network(
-          item.coverImage,
+          widget.item.coverImage,
           width: double.infinity,
-          height: imageHeight,
+          height: FeedItemView.imageHeight,
           fit: BoxFit.cover,
         ) :
         Container(
           width: double.infinity,
-          height: imageHeight,
+          height: FeedItemView.imageHeight,
         );
 
   Widget _buildWhiteArea() => Container(
         padding: EdgeInsets.fromLTRB(0, 12, 0, 5),
-        height: whiteAreaHeight,
+        height: FeedItemView.whiteAreaHeight,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: ListUtil.notNullWidgets([
-            item.companyName == null ? null :
-              Text(item.companyName, style: AppTheme.heavyFontMediumSize),
+            widget.item.companyName == null ? null :
+              Text(widget.item.companyName, style: AppTheme.heavyFontMediumSize),
 
-            (item.timeStart ?? item.timeEnd) == null ? null :
-              Text('${item.timeStart} - ${item.timeEnd}',
+            (widget.item.timeStart ?? widget.item.timeEnd) == null ? null :
+              Text('${widget.item.timeStart} - ${widget.item.timeEnd}',
                 style: AppTheme.lightFontSmall),
 
           ]),
@@ -82,21 +120,21 @@ class FeedItemView extends StatelessWidget {
       );
 
   Widget _buildFavoriteButton() =>
-      item.favorites == null ? null :
+      widget.item.favorites == null ? null :
         Positioned(
           right: 0,
           top: 10,
-          height: blackBarHeight,
+          height: FeedItemView.blackBarHeight,
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 6.0),
             decoration: BoxDecoration(
-              color: blackOverlayColor,
+              color: AppTheme.blackBarColor,
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Icon(Icons.favorite, color: Colors.white, size: 22),
-                Text('${item.favorites}',
+                Text('${widget.item.favorites}',
                   style: TextStyle(
                     color: Colors.white
                   ).merge(AppTheme.boldFontSmallSize))
@@ -111,15 +149,15 @@ class FeedItemView extends StatelessWidget {
     return feedBloc == null ? null :
       Positioned(
       top: 10,
-      height: blackBarHeight,
+      height: FeedItemView.blackBarHeight,
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 6.0),
         decoration: BoxDecoration(
-          color: blackOverlayColor
+          color: AppTheme.blackBarColor
         ),
         child: Center(
           child: FeedItemDistanceText(
-            feedItem: item,
+            feedItem: widget.item,
             feedBloc: feedBloc,
             style: TextStyle(
               color: Colors.white,
@@ -131,31 +169,31 @@ class FeedItemView extends StatelessWidget {
   }
 
   Widget _buildAvatar() =>
-    item.avatarImage == null ? null :
+    widget.item.avatarImage == null ? null :
       Positioned(
-        top: (imageHeight - blackBarHeight) - CompanyAvatar.radius,
+        top: (FeedItemView.imageHeight - FeedItemView.blackBarHeight) - CompanyAvatar.radius,
         right: 0,
         left: 0,
-        child: CompanyAvatar(src: item.avatarImage)
+        child: CompanyAvatar(src: widget.item.avatarImage)
       );
 
   List<Widget> _buildBlackBar() => [
         Positioned(
-          bottom: whiteAreaHeight,
-          height: blackBarHeight,
+          bottom: FeedItemView.whiteAreaHeight,
+          height: FeedItemView.blackBarHeight,
           left: 0,
           right: 0,
           child: DecoratedBox(
             decoration: BoxDecoration(
-              color: blackOverlayColor,
+              color: AppTheme.blackBarColor,
             ),
           ),
         ),
         Positioned(
-          bottom: whiteAreaHeight,
+          bottom: FeedItemView.whiteAreaHeight,
           left: 8,
           right: 8,
-          height: blackBarHeight,
+          height: FeedItemView.blackBarHeight,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: ListUtil.notNullWidgets([
@@ -163,20 +201,20 @@ class FeedItemView extends StatelessWidget {
                 backgroundColor: Colors.green,
                 radius: 9,
               ),
-              item.itemsLeft == null ? null :
+              widget.item.itemsLeft == null ? null :
                 Padding(
                   padding: const EdgeInsets.only(left: 8.0),
                   child: Text(
-                    '${item.itemsLeft} left',
+                    '${widget.item.itemsLeft} left',
                     style: TextStyle(
                       color: Colors.white,
                     ),
                   ),
                 ),
-              item.price == null || !item.price.containsKey('dkk') ? null :
+              widget.item.price == null || !widget.item.price.containsKey('dkk') ? null :
                 Expanded(
                   child: Text(
-                    '${(item.price['dkk'])} DKK',
+                    '${(widget.item.price['dkk'])} DKK',
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       color: Colors.white,

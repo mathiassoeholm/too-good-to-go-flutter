@@ -3,6 +3,7 @@ import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
 import 'package:too_good_to_go/shared/bloc_provider.dart';
+import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
 
 class DetailsView extends StatelessWidget {
@@ -10,7 +11,7 @@ class DetailsView extends StatelessWidget {
   /// Does not include the space outside of safe area.
   static const topAreaHeight = 216.0;
 
-  static const blackBarHeight = 60.0;
+  static const blackBarHeight = 48.0;
   static const extraSpaceSoAvatarCanOverflow = 15.0;
 
   final FeedItem feedItem;
@@ -68,6 +69,7 @@ class DetailsView extends StatelessWidget {
           Container(height: topAreaHeight),
           _buildCompanyName(),
           _buildBackButton(context),
+          _buildBlackBar(),
           _buildAvatar(),
         ]),
       ),
@@ -138,6 +140,20 @@ class DetailsView extends StatelessWidget {
       right: 0,
       left: 0,
       child: CompanyAvatar(src: feedItem.avatarImage),
+    );
+  }
+
+  Widget _buildBlackBar() {
+    return Positioned(
+      bottom: 0,
+      left: 0,
+      right: 0,
+      height: blackBarHeight,
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppTheme.blackBarColor,
+        ),
+      ),
     );
   }
 }

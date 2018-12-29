@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:too_good_to_go/main.dart';
-import 'package:too_good_to_go/shared/widgets/ChangeColorButton.dart';
+import 'package:too_good_to_go/shared/widgets/change-color-button.dart';
 
 import 'mocks.dart';
 

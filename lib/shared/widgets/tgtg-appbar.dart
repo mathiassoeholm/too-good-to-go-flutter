@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme.dart';
-import 'ChangeColorButton.dart';
+import 'change-color-button.dart';
 
 class TGTGAppBar extends StatefulWidget {
   @override

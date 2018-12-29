@@ -13,6 +13,8 @@ class AppTheme {
   static const appBarElevation = 0.0;
   static const titleFontSize = 19.0;
 
+  static const blackBarColor = Color.fromARGB(190, 0, 0, 0);
+
   static const TextStyle boldFontSmallSize = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 15,
