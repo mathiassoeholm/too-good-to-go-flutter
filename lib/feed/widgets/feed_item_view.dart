@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/widgets/favorites_button.dart';
 import 'package:too_good_to_go/feed/widgets/feed_item_distance_text.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
 import 'package:too_good_to_go/feed/widgets/on_press_overlay.dart';
@@ -77,7 +78,7 @@ class FeedItemView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: ListUtil.notNullWidgets([
             item.companyName == null ? null :
-              Text(item.companyName, style: AppTheme.heavyFontMediumSize),
+              Text(item.companyName, style: AppTheme.heavyFontMedium),
 
             (item.timeStart ?? item.timeEnd) == null ? null :
               Text('${item.timeStart} - ${item.timeEnd}',
@@ -92,22 +93,7 @@ class FeedItemView extends StatelessWidget {
           right: 0,
           top: 10,
           height: FeedItemView.blackBarHeight,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 6.0),
-            decoration: BoxDecoration(
-              color: AppTheme.blackBarColor,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Icon(Icons.favorite, color: Colors.white, size: 22),
-                Text('${item.favorites}',
-                  style: TextStyle(
-                    color: Colors.white
-                  ).merge(AppTheme.boldFontSmallSize))
-              ],
-            ),
-          ),
+          child: FavoritesButton(favorites: item.favorites)
         );
 
   Widget _buildDistanceDisplay(BuildContext context) {
@@ -165,7 +151,7 @@ class FeedItemView extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: ListUtil.notNullWidgets([
               CircleAvatar(
-                backgroundColor: Colors.green,
+                backgroundColor: Colors.greenAccent,
                 radius: 9,
               ),
               item.itemsLeft == null ? null :
@@ -185,7 +171,7 @@ class FeedItemView extends StatelessWidget {
                     textAlign: TextAlign.right,
                     style: TextStyle(
                       color: Colors.white,
-                    ).merge(AppTheme.boldFontMediumSize),
+                    ).merge(AppTheme.boldFontMedium),
                   ),
                 ),
             ]),

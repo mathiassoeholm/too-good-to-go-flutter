@@ -6,7 +6,10 @@ import '../utilities/test_utilites.dart';
 
 void main() {
   testWidgets('DetailsView displays the company name', (WidgetTester tester) async {
-    final item = FeedItem((b) => b..companyName = 'Food Inc.');
+    final item = FeedItem((b) => b
+      ..companyName = 'Food Inc.'
+      ..price['dkk'] = 45
+      ..favorites = 500);
 
     await tester.pumpWidget(MaterialApp(home: DetailsView(item)));
 

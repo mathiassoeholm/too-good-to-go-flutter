@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
+import 'package:too_good_to_go/feed/widgets/favorites_button.dart';
 import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
@@ -13,6 +14,8 @@ class DetailsView extends StatelessWidget {
 
   static const blackBarHeight = 48.0;
   static const extraSpaceSoAvatarCanOverflow = 15.0;
+  static const statusIndicatorRadius = 8.0;
+  static const blackBarHorizontalPadding = 20.0;
 
   final FeedItem feedItem;
 
@@ -71,6 +74,10 @@ class DetailsView extends StatelessWidget {
           _buildBackButton(context),
           _buildBlackBar(),
           _buildAvatar(),
+          _buildStatusIndicator(),
+          _buildAmountLeftText(),
+          _buildPriceText(),
+          _buildFavoritesButton(),
         ]),
       ),
     );
@@ -154,6 +161,61 @@ class DetailsView extends StatelessWidget {
           color: AppTheme.blackBarColor,
         ),
       ),
+    );
+  }
+
+  Widget _buildStatusIndicator() {
+    return Positioned(
+      left: blackBarHorizontalPadding,
+      bottom: 0,
+      height: blackBarHeight,
+      child: CircleAvatar(
+        radius: statusIndicatorRadius,
+        backgroundColor: Colors.greenAccent,
+      ),
+    );
+  }
+  
+  Widget _buildAmountLeftText() {
+    return Positioned(
+      left: blackBarHorizontalPadding + statusIndicatorRadius*2,
+      bottom: 0,
+      height: blackBarHeight,
+      child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(6.0),
+            child: Text('${feedItem.itemsLeft} left',
+              style: AppTheme.boldFontMedium.merge(TextStyle(
+                color: Colors.white,
+              )),
+            ),
+          )
+      ),
+    );
+  }
+
+  Widget _buildPriceText() {
+    return Positioned(
+      right: blackBarHorizontalPadding,
+      bottom: blackBarHeight/2,
+      height: blackBarHeight/2,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 6.0),
+        child: Text('${feedItem.price['dkk']} DKK',
+          style: AppTheme.boldFontMediumLarge.merge(TextStyle(
+              color: Colors.white,
+            )),
+          ),
+      ),
+    );
+  }
+
+  Widget _buildFavoritesButton() {
+    return Positioned(
+      top: 5,
+      right: 0,
+      height: 27,
+      child: FavoritesButton(favorites: feedItem.favorites)
     );
   }
 }
