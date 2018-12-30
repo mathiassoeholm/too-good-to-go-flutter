@@ -73,6 +73,12 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
         ..add(serializers.serialize(object.favorites,
             specifiedType: const FullType(int)));
     }
+    if (object.description != null) {
+      result
+        ..add('description')
+        ..add(serializers.serialize(object.description,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -127,6 +133,10 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
           result.favorites = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'description':
+          result.description = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -153,6 +163,8 @@ class _$FeedItem extends FeedItem {
   final String timeEnd;
   @override
   final int favorites;
+  @override
+  final String description;
 
   factory _$FeedItem([void updates(FeedItemBuilder b)]) =>
       (new FeedItemBuilder()..update(updates)).build();
@@ -166,7 +178,8 @@ class _$FeedItem extends FeedItem {
       this.price,
       this.timeStart,
       this.timeEnd,
-      this.favorites})
+      this.favorites,
+      this.description})
       : super._();
 
   @override
@@ -188,7 +201,8 @@ class _$FeedItem extends FeedItem {
         price == other.price &&
         timeStart == other.timeStart &&
         timeEnd == other.timeEnd &&
-        favorites == other.favorites;
+        favorites == other.favorites &&
+        description == other.description;
   }
 
   @override
@@ -200,15 +214,17 @@ class _$FeedItem extends FeedItem {
                     $jc(
                         $jc(
                             $jc(
-                                $jc($jc(0, companyName.hashCode),
-                                    coverImage.hashCode),
-                                avatarImage.hashCode),
-                            location.hashCode),
-                        itemsLeft.hashCode),
-                    price.hashCode),
-                timeStart.hashCode),
-            timeEnd.hashCode),
-        favorites.hashCode));
+                                $jc(
+                                    $jc($jc(0, companyName.hashCode),
+                                        coverImage.hashCode),
+                                    avatarImage.hashCode),
+                                location.hashCode),
+                            itemsLeft.hashCode),
+                        price.hashCode),
+                    timeStart.hashCode),
+                timeEnd.hashCode),
+            favorites.hashCode),
+        description.hashCode));
   }
 
   @override
@@ -222,7 +238,8 @@ class _$FeedItem extends FeedItem {
           ..add('price', price)
           ..add('timeStart', timeStart)
           ..add('timeEnd', timeEnd)
-          ..add('favorites', favorites))
+          ..add('favorites', favorites)
+          ..add('description', description))
         .toString();
   }
 }
@@ -267,6 +284,10 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
   int get favorites => _$this._favorites;
   set favorites(int favorites) => _$this._favorites = favorites;
 
+  String _description;
+  String get description => _$this._description;
+  set description(String description) => _$this._description = description;
+
   FeedItemBuilder();
 
   FeedItemBuilder get _$this {
@@ -280,6 +301,7 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
       _timeStart = _$v.timeStart;
       _timeEnd = _$v.timeEnd;
       _favorites = _$v.favorites;
+      _description = _$v.description;
       _$v = null;
     }
     return this;
@@ -312,7 +334,8 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
               price: _price?.build(),
               timeStart: timeStart,
               timeEnd: timeEnd,
-              favorites: favorites);
+              favorites: favorites,
+              description: description);
     } catch (_) {
       String _$failedField;
       try {

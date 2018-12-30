@@ -9,13 +9,15 @@ void main() {
     final item = FeedItem((b) => b
       ..companyName = 'Food Inc.'
       ..price['dkk'] = 45
-      ..favorites = 500);
+      ..favorites = 500
+      ..description = 'This is the \n description 🔥');
 
     await tester.pumpWidget(MaterialApp(home: DetailsView(item)));
 
     expect(find.text('Food Inc.'), findsOneWidget);
     expect(find.text('45 DKK'), findsOneWidget);
     expect(find.text('500'), findsOneWidget);
+    expect(find.text('This is the \n description 🔥'), findsOneWidget);
   });
 
   testWidgets('DetailsView never writes null', (WidgetTester tester) async {

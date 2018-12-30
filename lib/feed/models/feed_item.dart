@@ -35,6 +35,9 @@ abstract class FeedItem implements Built<FeedItem, FeedItemBuilder> {
   @nullable
   int get favorites;
 
+  @nullable
+  String get description;
+
   FeedItem._();
   factory FeedItem([updates(FeedItemBuilder b)]) = _$FeedItem;
 }

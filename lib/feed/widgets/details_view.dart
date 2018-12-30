@@ -177,6 +177,10 @@ class DetailsView extends StatelessWidget {
   }
   
   Widget _buildAmountLeftText() {
+    if (feedItem.itemsLeft == null) {
+      return null;
+    }
+
     return Positioned(
       left: blackBarHorizontalPadding + statusIndicatorRadius*2,
       bottom: 0,
@@ -195,6 +199,10 @@ class DetailsView extends StatelessWidget {
   }
 
   Widget _buildPriceText() {
+    if (feedItem.price == null || !feedItem.price.containsKey('dkk')) {
+      return null;
+    }
+
     return Positioned(
       right: blackBarHorizontalPadding,
       bottom: blackBarHeight/2,
@@ -211,6 +219,10 @@ class DetailsView extends StatelessWidget {
   }
 
   Widget _buildFavoritesButton() {
+    if (feedItem.favorites == null) {
+      return null;
+    }
+
     return Positioned(
       top: 5,
       right: 0,
