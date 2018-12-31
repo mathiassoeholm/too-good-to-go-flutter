@@ -33,6 +33,7 @@ class DetailsView extends StatelessWidget {
           _buildTop(context),
           Expanded(
             child: Container(
+              child: _buildDescription(context),
               decoration: BoxDecoration(
                 color: Colors.white,
               ),
@@ -228,6 +229,36 @@ class DetailsView extends StatelessWidget {
       right: 0,
       height: 27,
       child: FavoritesButton(favorites: feedItem.favorites)
+    );
+  }
+
+  Widget _buildDescription(BuildContext context) {
+    if (feedItem.description == null) {
+      return null;
+    }
+
+    return ListView(
+      padding: EdgeInsets.all(0),
+      children: <Widget>[
+        Column(
+          children: feedItem.description.keys.map((emoji) {
+            final description = feedItem.description[emoji];
+
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+              child: RichText(
+                text: TextSpan(
+                  text: '$emoji ',
+                  style: Theme.of(context).textTheme.title,
+                  children: <TextSpan>[
+                    TextSpan(text: description, style: Theme.of(context).textTheme.body1),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
+        ),
+      ],
     );
   }
 }

@@ -77,7 +77,8 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
       result
         ..add('description')
         ..add(serializers.serialize(object.description,
-            specifiedType: const FullType(String)));
+            specifiedType: const FullType(BuiltMap,
+                const [const FullType(String), const FullType(String)])));
     }
 
     return result;
@@ -134,8 +135,11 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
               specifiedType: const FullType(int)) as int;
           break;
         case 'description':
-          result.description = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+          result.description.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(String),
+                const FullType(String)
+              ])) as BuiltMap);
           break;
       }
     }
@@ -164,7 +168,7 @@ class _$FeedItem extends FeedItem {
   @override
   final int favorites;
   @override
-  final String description;
+  final BuiltMap<String, String> description;
 
   factory _$FeedItem([void updates(FeedItemBuilder b)]) =>
       (new FeedItemBuilder()..update(updates)).build();
@@ -284,9 +288,11 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
   int get favorites => _$this._favorites;
   set favorites(int favorites) => _$this._favorites = favorites;
 
-  String _description;
-  String get description => _$this._description;
-  set description(String description) => _$this._description = description;
+  MapBuilder<String, String> _description;
+  MapBuilder<String, String> get description =>
+      _$this._description ??= new MapBuilder<String, String>();
+  set description(MapBuilder<String, String> description) =>
+      _$this._description = description;
 
   FeedItemBuilder();
 
@@ -301,7 +307,7 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
       _timeStart = _$v.timeStart;
       _timeEnd = _$v.timeEnd;
       _favorites = _$v.favorites;
-      _description = _$v.description;
+      _description = _$v.description?.toBuilder();
       _$v = null;
     }
     return this;
@@ -335,7 +341,7 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
               timeStart: timeStart,
               timeEnd: timeEnd,
               favorites: favorites,
-              description: description);
+              description: _description?.build());
     } catch (_) {
       String _$failedField;
       try {
@@ -344,6 +350,9 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
 
         _$failedField = 'price';
         _price?.build();
+
+        _$failedField = 'description';
+        _description?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'FeedItem', _$failedField, e.toString());

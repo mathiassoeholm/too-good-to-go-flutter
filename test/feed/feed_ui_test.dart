@@ -13,7 +13,7 @@ import '../mocks.dart';
 import '../utilities/test_utilites.dart';
 
 void main() {
-  testWidgets('FeedItemView displays the company name', (WidgetTester tester) async {
+  testWidgets('FeedItemView displays various info', (WidgetTester tester) async {
     final item = FeedItem((b) => b
       ..companyName = 'Food Inc.'
       ..price['dkk'] = 45

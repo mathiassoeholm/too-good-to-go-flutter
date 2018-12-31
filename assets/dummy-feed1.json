@@ -13,7 +13,13 @@
     },
     "timeStart": "16:45",
     "timeEnd": "17:00",
-    "favorites": 202
+    "favorites": 202,
+    "description": {
+      "🥐": "Du kan hjælpe os med at bekæmpe madspild ved at redde en lykkepose med 100% økologiske overskydende lækkerier.",
+      "👉": "Udvalget af overskydende varer varierer fra dag til dag - og det er derfor ikke en selvfølge, at der er kage i posen. Bemærk, at emmerys er gode til at genbruge weinerbrød og kage til at lave romkugler mv. Så dette vil ikke være i din pose, og du vil se det ligge på hylderne, når du afhemnter din pose i butikken - det er ikke ensbetydende med, at de smider det ud.",
+      "💡": "1/3 af al mad spildes og det vil vi lave om på sammen med dig - én lykkepose ad gangen.",
+      "📷": "Føl Too Good To Go på dit favoritmedie og del din lykkepose med hashtagget #toogoodtogo"
+    }
   },
   {
     "companyName": "Kvickly - Veri (frugt og grønt)",

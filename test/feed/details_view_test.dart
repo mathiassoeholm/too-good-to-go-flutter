@@ -5,19 +5,17 @@ import 'package:too_good_to_go/feed/models/feed_item.dart';
 import '../utilities/test_utilites.dart';
 
 void main() {
-  testWidgets('DetailsView displays the company name', (WidgetTester tester) async {
+  testWidgets('DetailsView displays various info', (WidgetTester tester) async {
     final item = FeedItem((b) => b
       ..companyName = 'Food Inc.'
       ..price['dkk'] = 45
-      ..favorites = 500
-      ..description = 'This is the \n description 🔥');
+      ..favorites = 500);
 
     await tester.pumpWidget(MaterialApp(home: DetailsView(item)));
 
     expect(find.text('Food Inc.'), findsOneWidget);
     expect(find.text('45 DKK'), findsOneWidget);
     expect(find.text('500'), findsOneWidget);
-    expect(find.text('This is the \n description 🔥'), findsOneWidget);
   });
 
   testWidgets('DetailsView never writes null', (WidgetTester tester) async {

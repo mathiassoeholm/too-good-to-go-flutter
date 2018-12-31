@@ -23,7 +23,11 @@ void main() {
   final httpClient = MockClient((request) async {
     await Future.delayed(Duration(seconds: 1));
     final json = await (random.nextBool() ? dummyJson1Future : dummyJson2Future);
-    return http.Response(json, 200);
+    final headers = {
+      'content-type': 'application/json; charset=utf-8',
+    };
+
+    return http.Response(json, 200, headers: headers);
   });
 
   final feedService = FeedService(httpClient: httpClient);

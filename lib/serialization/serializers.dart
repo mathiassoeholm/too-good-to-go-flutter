@@ -6,7 +6,7 @@ import 'package:built_value/standard_json_plugin.dart';
 import 'package:too_good_to_go/feed/models/location.dart';
 import 'package:built_collection/built_collection.dart';
 
-part 'package:too_good_to_go/serialization/serializers.g.dart';
+part 'serializers.g.dart';
 
 /// Example of how to use built_value serialization.
 ///
@@ -26,5 +26,7 @@ part 'package:too_good_to_go/serialization/serializers.g.dart';
 final Serializers serializers = _$serializers;
 
 Serializers standardSerializers =
-  (serializers.toBuilder()..addPlugin(StandardJsonPlugin())).build();
-
+  (serializers.toBuilder()
+    ..addPlugin(StandardJsonPlugin())
+    ..addBuilderFactory(FullType(BuiltMap, [FullType(String), FullType(String)]),
+        () => MapBuilder<String, String>())).build();
