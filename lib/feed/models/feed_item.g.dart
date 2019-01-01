@@ -55,6 +55,13 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
             specifiedType: const FullType(BuiltMap,
                 const [const FullType(String), const FullType(int)])));
     }
+    if (object.originalPrice != null) {
+      result
+        ..add('originalPrice')
+        ..add(serializers.serialize(object.originalPrice,
+            specifiedType: const FullType(BuiltMap,
+                const [const FullType(String), const FullType(int)])));
+    }
     if (object.timeStart != null) {
       result
         ..add('timeStart')
@@ -122,6 +129,13 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
                 const FullType(int)
               ])) as BuiltMap);
           break;
+        case 'originalPrice':
+          result.originalPrice.replace(serializers.deserialize(value,
+              specifiedType: const FullType(BuiltMap, const [
+                const FullType(String),
+                const FullType(int)
+              ])) as BuiltMap);
+          break;
         case 'timeStart':
           result.timeStart = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -162,6 +176,8 @@ class _$FeedItem extends FeedItem {
   @override
   final BuiltMap<String, int> price;
   @override
+  final BuiltMap<String, int> originalPrice;
+  @override
   final String timeStart;
   @override
   final String timeEnd;
@@ -180,6 +196,7 @@ class _$FeedItem extends FeedItem {
       this.location,
       this.itemsLeft,
       this.price,
+      this.originalPrice,
       this.timeStart,
       this.timeEnd,
       this.favorites,
@@ -203,6 +220,7 @@ class _$FeedItem extends FeedItem {
         location == other.location &&
         itemsLeft == other.itemsLeft &&
         price == other.price &&
+        originalPrice == other.originalPrice &&
         timeStart == other.timeStart &&
         timeEnd == other.timeEnd &&
         favorites == other.favorites &&
@@ -219,12 +237,14 @@ class _$FeedItem extends FeedItem {
                         $jc(
                             $jc(
                                 $jc(
-                                    $jc($jc(0, companyName.hashCode),
-                                        coverImage.hashCode),
-                                    avatarImage.hashCode),
-                                location.hashCode),
-                            itemsLeft.hashCode),
-                        price.hashCode),
+                                    $jc(
+                                        $jc($jc(0, companyName.hashCode),
+                                            coverImage.hashCode),
+                                        avatarImage.hashCode),
+                                    location.hashCode),
+                                itemsLeft.hashCode),
+                            price.hashCode),
+                        originalPrice.hashCode),
                     timeStart.hashCode),
                 timeEnd.hashCode),
             favorites.hashCode),
@@ -240,6 +260,7 @@ class _$FeedItem extends FeedItem {
           ..add('location', location)
           ..add('itemsLeft', itemsLeft)
           ..add('price', price)
+          ..add('originalPrice', originalPrice)
           ..add('timeStart', timeStart)
           ..add('timeEnd', timeEnd)
           ..add('favorites', favorites)
@@ -276,6 +297,12 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
       _$this._price ??= new MapBuilder<String, int>();
   set price(MapBuilder<String, int> price) => _$this._price = price;
 
+  MapBuilder<String, int> _originalPrice;
+  MapBuilder<String, int> get originalPrice =>
+      _$this._originalPrice ??= new MapBuilder<String, int>();
+  set originalPrice(MapBuilder<String, int> originalPrice) =>
+      _$this._originalPrice = originalPrice;
+
   String _timeStart;
   String get timeStart => _$this._timeStart;
   set timeStart(String timeStart) => _$this._timeStart = timeStart;
@@ -304,6 +331,7 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
       _location = _$v.location?.toBuilder();
       _itemsLeft = _$v.itemsLeft;
       _price = _$v.price?.toBuilder();
+      _originalPrice = _$v.originalPrice?.toBuilder();
       _timeStart = _$v.timeStart;
       _timeEnd = _$v.timeEnd;
       _favorites = _$v.favorites;
@@ -338,6 +366,7 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
               location: _location?.build(),
               itemsLeft: itemsLeft,
               price: _price?.build(),
+              originalPrice: _originalPrice?.build(),
               timeStart: timeStart,
               timeEnd: timeEnd,
               favorites: favorites,
@@ -350,6 +379,8 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
 
         _$failedField = 'price';
         _price?.build();
+        _$failedField = 'originalPrice';
+        _originalPrice?.build();
 
         _$failedField = 'description';
         _description?.build();

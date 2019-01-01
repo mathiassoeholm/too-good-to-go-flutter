@@ -27,6 +27,9 @@ abstract class FeedItem implements Built<FeedItem, FeedItemBuilder> {
   BuiltMap<String, int> get price;
 
   @nullable
+  BuiltMap<String, int> get originalPrice;
+
+  @nullable
   String get timeStart;
 
   @nullable

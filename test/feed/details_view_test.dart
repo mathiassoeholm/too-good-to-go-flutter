@@ -9,6 +9,7 @@ void main() {
     final item = FeedItem((b) => b
       ..companyName = 'Food Inc.'
       ..price['dkk'] = 45
+      ..originalPrice['dkk'] = 100
       ..favorites = 500);
 
     await tester.pumpWidget(MaterialApp(home: DetailsView(item)));
@@ -16,6 +17,7 @@ void main() {
     expect(find.text('Food Inc.'), findsOneWidget);
     expect(find.text('45 DKK'), findsOneWidget);
     expect(find.text('500'), findsOneWidget);
+    expect(find.text('100 DKK'), findsOneWidget);
   });
 
   testWidgets('DetailsView never writes null', (WidgetTester tester) async {
@@ -29,7 +31,9 @@ void main() {
     DetailsView(
         FeedItem((b) => b
           ..price['usd'] = 44
-          ..price['eur'] = 32)
+          ..price['eur'] = 32
+          ..originalPrice['usd'] = 89
+          ..originalPrice['eur'] = 32)
         )
       )
     );

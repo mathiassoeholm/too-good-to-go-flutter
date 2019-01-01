@@ -79,6 +79,7 @@ class DetailsView extends StatelessWidget {
           _buildAmountLeftText(),
           _buildPriceText(),
           _buildFavoritesButton(),
+          _buildOriginalPriceText(),
         ]),
       ),
     );
@@ -219,6 +220,26 @@ class DetailsView extends StatelessWidget {
     );
   }
 
+  Widget _buildOriginalPriceText() {
+    if (feedItem.originalPrice == null || !feedItem.price.containsKey('dkk')) {
+      return null;
+    }
+
+    return Positioned(
+      right: blackBarHorizontalPadding,
+      bottom: 0,
+      height: blackBarHeight/2,
+      child: Center(
+        child: Text('${feedItem.originalPrice['dkk']} DKK',
+          style: TextStyle(
+            color: Color.fromARGB(255, 150, 150, 150),
+            decoration: TextDecoration.lineThrough,
+          )
+        ),
+      )
+    );
+  }
+  
   Widget _buildFavoritesButton() {
     if (feedItem.favorites == null) {
       return null;
