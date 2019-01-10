@@ -19,6 +19,8 @@ dependencies:
   built_value: ^6.2.0
   built_collection: ^4.1.0
   rxdart: ^0.20.0
+  redux: ^3.0.0
+  flutter_redux: ^0.5.3
   flutter:
     sdk: flutter
 
