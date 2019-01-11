@@ -1,7 +1,15 @@
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 
-class SetItemsAction {
+class FetchItemsAction { }
+
+class FetchItemsFailedAction {
+  final Exception error;
+
+  FetchItemsFailedAction(this.error);
+}
+
+class FetchItemsSucceededAction {
   final List<FeedItem> items;
 
-  SetItemsAction(this.items);
+  FetchItemsSucceededAction(this.items);
 }

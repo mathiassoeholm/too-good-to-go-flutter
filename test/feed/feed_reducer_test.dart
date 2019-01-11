@@ -7,22 +7,51 @@ import 'package:too_good_to_go/feed/models/feed_item.dart';
 
 main() {
   group('Feed Reducer', () {
-    test('should load feed into store', () {
-      final feedItem1 = FeedItem((b) => b..companyName = 'Company 1');
-      final feedItem2 = FeedItem((b) => b..companyName = 'Company 3');
-      final feedItem3 = FeedItem((b) => b..companyName = 'Company 4');
-
-      final feedItems = [feedItem1, feedItem2, feedItem3];
-
+    test('should set isFetching when fetch is called', () {
       final store = Store<AppState>(
         appStateReducer,
         initialState: AppState(),
       );
 
+      expect(store.state.feed.isFetching, false);
+
+      store.dispatch(FetchItemsAction());
+
+      expect(store.state.feed.isFetching, true);
+    });
+
+    test('should set isFetching and error message when it fails', () {
+      final store = Store<AppState>(
+        appStateReducer,
+        initialState: AppState((b) => b..feed.isFetching = true),
+      );
+
+      expect(store.state.feed.isFetching, true);
+      expect(store.state.feed.fetchError, null);
+
+      store.dispatch(FetchItemsFailedAction(new FormatException("error-message")));
+
+      expect(store.state.feed.isFetching, false);
+      expect((store.state.feed.fetchError as FormatException).message, "error-message");
+    });
+
+    test('should set isFetching and items when it succeeds', () {
+      final store = Store<AppState>(
+        appStateReducer,
+        initialState: AppState((b) => b..feed.isFetching = true),
+      );
+
+      final feedItem1 = FeedItem((b) => b..companyName = 'Company 1');
+      final feedItem2 = FeedItem((b) => b..companyName = 'Company 2');
+
+      final feedItems = [feedItem1, feedItem2];
+
+      expect(store.state.feed.isFetching, true);
       expect(store.state.feed.items, []);
 
-      store.dispatch(SetItemsAction(feedItems));
+      store.dispatch(FetchItemsSucceededAction(feedItems));
 
+      expect(store.state.feed.isFetching, false);
       expect(store.state.feed.items, feedItems);
     });
   });
