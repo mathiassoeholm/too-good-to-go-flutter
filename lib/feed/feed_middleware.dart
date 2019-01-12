@@ -19,9 +19,10 @@ async {
     final items = await feedService.getFeed();
 
     store.dispatch(FetchItemsSucceededAction(items));
+    action.completer.complete();
   } catch (error) {
-    print(error);
     store.dispatch(FetchItemsFailedAction(error));
+    action.completer.complete();
   }
 
   next(action);

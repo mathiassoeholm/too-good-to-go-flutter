@@ -2,11 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:http/testing.dart';
 import 'package:location/location.dart';
-import 'package:too_good_to_go/feed/feed_bloc.dart';
+import 'package:redux/redux.dart';
+import 'package:too_good_to_go/appstate/app_state.dart';
+import 'package:too_good_to_go/appstate/app_state_middleware.dart';
+import 'package:too_good_to_go/appstate/app_state_reducer.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
-import 'package:too_good_to_go/shared/bloc_provider.dart';
 import './shared/theme.dart';
 import 'package:too_good_to_go/home/widgets/home.dart';
 import 'package:http/http.dart' as http;
@@ -36,29 +39,34 @@ void main() {
   // Trigger permission popup
   location.getLocation();
 
-  final feedBloc = FeedBloc(feedService: feedService, location: location);
+  final Store<AppState> store = Store<AppState>(
+    appStateReducer,
+    initialState: AppState(),
+    middleware: createAppStateMiddleware(feedService)
+  );
 
-  runApp(MyApp(feedBloc));
+  runApp(MyApp(store));
 }
 
 class MyApp extends StatelessWidget {
-  final FeedBloc feedBloc;
+  final Store<AppState> store;
 
   const MyApp(
-    this.feedBloc,
+    this.store,
   );
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Too Good To Go',
-      theme: getTheme(),
-      home: BlocProvider(
-          bloc: feedBloc,
-          child: Home()),
+    return StoreProvider(
+      store: store,
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Too Good To Go',
+        theme: getTheme(),
+        home: Home(),
+      ),
     );
   }
 }

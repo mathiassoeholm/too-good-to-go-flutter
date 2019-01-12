@@ -15,6 +15,7 @@ main() {
 
     test('It calls getFeed and succeeds', () {
       final mockFeedService = MockFeedService();
+      final mockCompleter = MockCompleter();
       final captor = MockMiddleware();
 
       when(mockFeedService.getFeed()).thenAnswer((_) =>
@@ -27,15 +28,19 @@ main() {
           ..add(captor),
       );
 
-      store.dispatch(FetchItemsAction());
+      store.dispatch(FetchItemsAction(completer: mockCompleter));
 
       verify(mockFeedService.getFeed());
+
       verifyDispatchAction<FetchItemsSucceededAction>(captor);
       verifyNeverDispatchAction<FetchItemsFailedAction>(captor);
+
+      verify(mockCompleter.complete());
     });
 
     test('It calls getFeed and fails', () {
       final mockFeedService = MockFeedService();
+      final mockCompleter = MockCompleter();
       final captor = MockMiddleware();
 
       when(mockFeedService.getFeed()).thenThrow(Exception());
@@ -47,11 +52,14 @@ main() {
           ..add(captor),
       );
 
-      store.dispatch(FetchItemsAction());
+      store.dispatch(FetchItemsAction(completer: mockCompleter));
 
       verify(mockFeedService.getFeed());
+
       verifyDispatchAction<FetchItemsFailedAction>(captor);
       verifyNeverDispatchAction<FetchItemsSucceededAction>(captor);
+
+      verify(mockCompleter.complete());
     });
   });
 }
