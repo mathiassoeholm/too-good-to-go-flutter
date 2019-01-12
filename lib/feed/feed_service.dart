@@ -13,7 +13,11 @@ class FeedService {
     final response = await httpClient.get('http://not-a-real-api.com/toogoodtogo/feed');
 
     if (response.statusCode == 200) {
-      return parseFeedJson(response.body);
+      try {
+        return parseFeedJson(response.body);
+      } catch (error) {
+        return [];
+      }
     } else {
       return [];
     }

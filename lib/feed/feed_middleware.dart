@@ -13,10 +13,16 @@ Function(
   Store<AppState> feed,
   FetchItemsAction action,
   NextDispatcher next,
-) _createFetchItems(FeedService feedService) => (store, action, next) {
-  feedService.getFeed();
+) _createFetchItems(FeedService feedService) => (store, action, next)
+async {
+  try {
+    final items = await feedService.getFeed();
 
-  store.dispatch(FetchItemsSucceededAction([]));
+    store.dispatch(FetchItemsSucceededAction(items));
+  } catch (error) {
+    print(error);
+    store.dispatch(FetchItemsFailedAction(error));
+  }
 
   next(action);
 };

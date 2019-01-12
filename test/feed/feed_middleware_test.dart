@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:mockito/mockito.dart';
 import 'package:test/test.dart';
@@ -12,25 +13,45 @@ import '../mocks.dart';
 main() {
   group('Feed Middleware', () {
 
-    test('It calls getFeed', () {
+    test('It calls getFeed and succeeds', () {
       final mockFeedService = MockFeedService();
       final captor = MockMiddleware();
 
-      final store = Store<AppState>(
-          appStateReducer,
-          initialState: AppState(),
-          middleware: createFeedMiddleware(mockFeedService)
-            ..add(captor),
-      );
-
       when(mockFeedService.getFeed()).thenAnswer((_) =>
-          Future.value([FeedItem()]));
+          SynchronousFuture([FeedItem()]));
+
+      final store = Store<AppState>(
+        appStateReducer,
+        initialState: AppState(),
+        middleware: createFeedMiddleware(mockFeedService)
+          ..add(captor),
+      );
 
       store.dispatch(FetchItemsAction());
 
       verify(mockFeedService.getFeed());
       verifyDispatchAction<FetchItemsSucceededAction>(captor);
       verifyNeverDispatchAction<FetchItemsFailedAction>(captor);
+    });
+
+    test('It calls getFeed and fails', () {
+      final mockFeedService = MockFeedService();
+      final captor = MockMiddleware();
+
+      when(mockFeedService.getFeed()).thenThrow(Exception());
+
+      final store = Store<AppState>(
+        appStateReducer,
+        initialState: AppState(),
+        middleware: createFeedMiddleware(mockFeedService)
+          ..add(captor),
+      );
+
+      store.dispatch(FetchItemsAction());
+
+      verify(mockFeedService.getFeed());
+      verifyDispatchAction<FetchItemsFailedAction>(captor);
+      verifyNeverDispatchAction<FetchItemsSucceededAction>(captor);
     });
   });
 }

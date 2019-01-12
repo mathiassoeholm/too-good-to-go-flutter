@@ -71,4 +71,16 @@ void main() {
 
     expect(feed.first.companyName, equals('Kvickly - Veri (Bager)'));
   });
+
+  test('it returns empty array if json is bad', () async {
+
+    final mockClient = MockClient((request) async {
+      return http.Response('bad json', 200);
+    });
+
+    final feedService = FeedService(httpClient: mockClient);
+    final feed = await feedService.getFeed();
+
+    expect(feed, []);
+  });
 }
