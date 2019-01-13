@@ -3,12 +3,9 @@ import 'package:mockito/mockito.dart';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
-import 'package:too_good_to_go/feed/widgets/details_view.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/feed_item_distance_text.dart';
 import 'package:too_good_to_go/feed/widgets/feed_item_view.dart';
-import 'package:too_good_to_go/feed/widgets/feed_view.dart';
-
 import '../mocks.dart';
 import '../utilities/test_utilites.dart';
 
@@ -27,35 +24,6 @@ void main() {
     expect(find.text('45 DKK'), findsOneWidget);
     expect(find.text('500'), findsOneWidget);
     expect(find.text('12:00 - 13:35'), findsOneWidget);
-  });
-
-  testWidgets('Feed List Widget', (WidgetTester tester) async {
-    final streamController = StreamController<List<FeedItem>>();
-
-    final mockBlock = MockFeedBloc();
-
-    when(mockBlock.feed).thenAnswer((_) => streamController.stream);
-
-    await tester.pumpWidget(MaterialApp(home: FeedView(feedBloc: mockBlock)));
-
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
-
-    // Add items
-    final item1 = FeedItem((b) => b..companyName = 'Food Inc.');
-    final item2 = FeedItem((b) => b..companyName = 'Kickly');
-    streamController.add([item1, item2]);
-
-    await tester.pump();
-
-    expect(find.byType(CircularProgressIndicator), findsNothing);
-
-    final listView = find.byType(ListView);
-
-    expect(listView, findsOneWidget);
-    expect(find.descendant(of: listView, matching: find.byType(FeedItemView)),
-        findsNWidgets(2));
-
-    streamController.close();
   });
 
   testWidgets('Displays distance', (WidgetTester tester) async {
@@ -114,31 +82,6 @@ void main() {
     await tester.pump();
 
     expect(find.byType(Text), findsNothing);
-  });
-
-  testWidgets('It navigates to DetailsPage when pressing feed item',
-    (WidgetTester tester) async
-  {
-    final item = FeedItem((b) => b..companyName = 'Food Inc.');
-    final mockBlock = MockFeedBloc();
-
-    when(mockBlock.feed).thenAnswer((_) =>
-      Stream.fromIterable([
-        [item]
-      ]));
-
-    await tester.pumpWidget(MaterialApp(home: FeedView(feedBloc: mockBlock)));
-
-    // StreamBuilder needs another pump
-    await tester.pump();
-
-    // Simulate press
-    (find.byType(FeedItemView).evaluate().first.widget as FeedItemView).onPressed();
-
-    await tester.pumpAndSettle();
-
-    expect(find.byType(FeedView), findsNothing);
-    expect(find.byType(DetailsView), findsOneWidget);
   });
 
   testWidgets('It never writes null', (WidgetTester tester) async {

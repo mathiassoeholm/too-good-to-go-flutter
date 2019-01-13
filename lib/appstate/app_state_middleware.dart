@@ -6,5 +6,7 @@ import 'package:too_good_to_go/feed/feed_service.dart';
 List<Middleware<AppState>> createAppStateMiddleware(FeedService feedService) {
   return []
     ..addAll(createFeedMiddleware(feedService))
+    // Uncomment to see what's going on:
+    //..add(LoggingMiddleware.printer())
   ;
 }

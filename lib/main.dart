@@ -9,6 +9,7 @@ import 'package:redux/redux.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
 import 'package:too_good_to_go/appstate/app_state_middleware.dart';
 import 'package:too_good_to_go/appstate/app_state_reducer.dart';
+import 'package:too_good_to_go/feed/feed_actions.dart';
 import 'package:too_good_to_go/feed/feed_service.dart';
 import './shared/theme.dart';
 import 'package:too_good_to_go/home/widgets/home.dart';
@@ -24,7 +25,7 @@ void main() {
   final dummyJson2Future = rootBundle.loadString('assets/dummy-feed2.json');
 
   final httpClient = MockClient((request) async {
-    await Future.delayed(Duration(seconds: 1));
+    await Future.delayed(Duration(milliseconds: 1500));
     final json = await (random.nextBool() ? dummyJson1Future : dummyJson2Future);
     final headers = {
       'content-type': 'application/json; charset=utf-8',
@@ -44,6 +45,8 @@ void main() {
     initialState: AppState(),
     middleware: createAppStateMiddleware(feedService)
   );
+
+  store.dispatch(FetchItemsAction());
 
   runApp(MyApp(store));
 }

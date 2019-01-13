@@ -15,6 +15,8 @@ Function(
   NextDispatcher next,
 ) _createFetchItems(FeedService feedService) => (store, action, next)
 async {
+  next(action);
+
   try {
     final items = await feedService.getFeed();
 
@@ -24,6 +26,4 @@ async {
     store.dispatch(FetchItemsFailedAction(error));
     action.completer.complete();
   }
-
-  next(action);
 };
