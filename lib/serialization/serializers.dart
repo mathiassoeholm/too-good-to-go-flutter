@@ -3,7 +3,7 @@ library serializers;
 import 'package:built_value/serializer.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:built_value/standard_json_plugin.dart';
-import 'package:too_good_to_go/feed/models/location.dart';
+import 'package:too_good_to_go/location/location.dart';
 import 'package:built_collection/built_collection.dart';
 
 part 'serializers.g.dart';

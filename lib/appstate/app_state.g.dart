@@ -9,11 +9,13 @@ part of 'app_state.dart';
 class _$AppState extends AppState {
   @override
   final Feed feed;
+  @override
+  final Location location;
 
   factory _$AppState([void updates(AppStateBuilder b)]) =>
       (new AppStateBuilder()..update(updates)).build();
 
-  _$AppState._({this.feed}) : super._() {
+  _$AppState._({this.feed, this.location}) : super._() {
     if (feed == null) {
       throw new BuiltValueNullFieldError('AppState', 'feed');
     }
@@ -29,17 +31,21 @@ class _$AppState extends AppState {
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is AppState && feed == other.feed;
+    return other is AppState &&
+        feed == other.feed &&
+        location == other.location;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, feed.hashCode));
+    return $jf($jc($jc(0, feed.hashCode), location.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('AppState')..add('feed', feed))
+    return (newBuiltValueToStringHelper('AppState')
+          ..add('feed', feed)
+          ..add('location', location))
         .toString();
   }
 }
@@ -51,11 +57,16 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   FeedBuilder get feed => _$this._feed ??= new FeedBuilder();
   set feed(FeedBuilder feed) => _$this._feed = feed;
 
+  LocationBuilder _location;
+  LocationBuilder get location => _$this._location ??= new LocationBuilder();
+  set location(LocationBuilder location) => _$this._location = location;
+
   AppStateBuilder();
 
   AppStateBuilder get _$this {
     if (_$v != null) {
       _feed = _$v.feed?.toBuilder();
+      _location = _$v.location?.toBuilder();
       _$v = null;
     }
     return this;
@@ -78,12 +89,15 @@ class AppStateBuilder implements Builder<AppState, AppStateBuilder> {
   _$AppState build() {
     _$AppState _$result;
     try {
-      _$result = _$v ?? new _$AppState._(feed: feed.build());
+      _$result = _$v ??
+          new _$AppState._(feed: feed.build(), location: _location?.build());
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'feed';
         feed.build();
+        _$failedField = 'location';
+        _location?.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'AppState', _$failedField, e.toString());

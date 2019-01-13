@@ -1,0 +1,1 @@
+// In here I will provide a selector that gives distance to all feed items.

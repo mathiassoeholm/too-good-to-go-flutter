@@ -1,7 +1,7 @@
 import 'package:built_collection/built_collection.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
-import 'package:too_good_to_go/feed/models/location.dart';
+import 'package:too_good_to_go/location/location.dart';
 
 part 'feed_item.g.dart';
 
