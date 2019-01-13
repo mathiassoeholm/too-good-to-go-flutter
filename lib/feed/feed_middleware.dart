@@ -10,9 +10,9 @@ List<Middleware<AppState>> createFeedMiddleware(FeedService feedService) {
 }
 
 Function(
-  Store<AppState> feed,
-  FetchItemsAction action,
-  NextDispatcher next,
+  Store<AppState>,
+  FetchItemsAction,
+  NextDispatcher,
 ) _createFetchItems(FeedService feedService) => (store, action, next)
 async {
   next(action);

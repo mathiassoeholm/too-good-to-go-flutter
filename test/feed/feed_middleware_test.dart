@@ -64,7 +64,7 @@ main() {
   });
 }
 
-void verifyDispatchAction<Action>(middleware) {
+void verifyDispatchAction<Action>(MockMiddleware middleware) {
   verify(middleware.call(
     any,
     TypeMatcher<Action>(),
@@ -72,10 +72,11 @@ void verifyDispatchAction<Action>(middleware) {
   ) as dynamic);
 }
 
-void verifyNeverDispatchAction<Action>(middleware) {
+void verifyNeverDispatchAction<Action>(MockMiddleware middleware) {
   verifyNever(middleware.call(
     any,
     TypeMatcher<Action>(),
     any,
   ) as dynamic);
 }
+
