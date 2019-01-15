@@ -7,6 +7,7 @@ import 'package:http/testing.dart';
 import 'package:location/location.dart';
 import 'package:redux/redux.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
+import 'package:too_good_to_go/appstate/app_state_actions.dart';
 import 'package:too_good_to_go/appstate/app_state_middleware.dart';
 import 'package:too_good_to_go/appstate/app_state_reducer.dart';
 import 'package:too_good_to_go/feed/feed_actions.dart';
@@ -43,9 +44,10 @@ void main() {
   final Store<AppState> store = Store<AppState>(
     appStateReducer,
     initialState: AppState(),
-    middleware: createAppStateMiddleware(feedService)
+    middleware: createAppStateMiddleware(feedService, location)
   );
 
+  store.dispatch(AppInitAction());
   store.dispatch(FetchItemsAction());
 
   runApp(MyApp(store));

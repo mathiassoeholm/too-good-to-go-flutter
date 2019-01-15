@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:too_good_to_go/feed/feed_bloc.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
 import 'package:too_good_to_go/feed/widgets/favorites_button.dart';
-import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
 
@@ -25,8 +23,6 @@ class DetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final feedBloc = BlocProvider.of<FeedBloc>(context);
-
     return Material(
       child: Column(
         children: <Widget>[

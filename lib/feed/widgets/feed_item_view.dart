@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:too_good_to_go/feed/feed_bloc.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:too_good_to_go/appstate/app_state.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/pretty_distance.dart';
 import 'package:too_good_to_go/feed/widgets/favorites_button.dart';
-import 'package:too_good_to_go/feed/widgets/feed_item_distance_text.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
 import 'package:too_good_to_go/feed/widgets/on_press_overlay.dart';
-import 'package:too_good_to_go/shared/bloc_provider.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
+import 'package:too_good_to_go/location/location_selector.dart';
 
 class FeedItemView extends StatelessWidget {
   static const blackBarHeight = 27.0;
@@ -97,27 +98,31 @@ class FeedItemView extends StatelessWidget {
         );
 
   Widget _buildDistanceDisplay(BuildContext context) {
-    final feedBloc = BlocProvider.of<FeedBloc>(context);
-
-    return feedBloc == null ? null :
-      Positioned(
-      top: 10,
-      height: FeedItemView.blackBarHeight,
-      child: Container(
-        padding: EdgeInsets.symmetric(horizontal: 6.0),
-        decoration: BoxDecoration(
-          color: AppTheme.blackBarColor
-        ),
-        child: Center(
-          child: FeedItemDistanceText(
-            feedItem: item,
-            feedBloc: feedBloc,
-            style: TextStyle(
-              color: Colors.white,
+    return StoreConnector<AppState, double>(
+      converter: (store) => distancesSelector(store.state)[item],
+      builder: (context, distance) {
+        return distance == null ?
+          Container(width: 0, height: 0) :
+          Positioned(
+            top: 10,
+            height: FeedItemView.blackBarHeight,
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 6.0),
+              decoration: BoxDecoration(
+                  color: AppTheme.blackBarColor
+              ),
+              child: Center(
+                child: Text(
+                  prettyDistance(distance),
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
             ),
-          ),
-        ),
-      ),
+          );
+      }
+
     );
   }
 

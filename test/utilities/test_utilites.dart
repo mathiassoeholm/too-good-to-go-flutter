@@ -1,7 +1,5 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import '../mocks.dart';
 
 void expectNoTextToContainNull() {
   find.byType(Text).evaluate().forEach((element) {

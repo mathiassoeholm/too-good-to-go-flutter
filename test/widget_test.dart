@@ -5,8 +5,6 @@ import 'package:too_good_to_go/appstate/app_state.dart';
 import 'package:too_good_to_go/main.dart';
 import 'package:too_good_to_go/shared/widgets/change-color-button.dart';
 
-import 'mocks.dart';
-
 void main() {
   testWidgets('The title is displayed', (WidgetTester tester) async {
 
