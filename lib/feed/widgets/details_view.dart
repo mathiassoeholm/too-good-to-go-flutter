@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:too_good_to_go/feed/models/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
@@ -24,17 +25,11 @@ class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.white,
       child: Column(
         children: <Widget>[
           _buildTop(context),
-          Expanded(
-            child: Container(
-              child: _buildDescription(context),
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-            ),
-          ),
+          _buildBottom(context),
         ],
       ),
     );
@@ -249,33 +244,78 @@ class DetailsView extends StatelessWidget {
     );
   }
 
+  Widget _buildBottom(BuildContext context) {
+    return Expanded(
+      child: SafeArea(
+        top: false,
+        child: ListView(
+          padding: EdgeInsets.all(0),
+          children: ListUtil.notNullWidgets([
+            _buildDescription(context),
+            _buildAddressSection(context),
+          ])
+        ),
+      ),
+    );
+  }
+
   Widget _buildDescription(BuildContext context) {
     if (feedItem.description == null) {
       return null;
     }
 
-    return ListView(
-      padding: EdgeInsets.all(0),
-      children: <Widget>[
-        Column(
-          children: feedItem.description.keys.map((emoji) {
-            final description = feedItem.description[emoji];
+    return Column(
+      children: feedItem.description.keys.map((emoji) {
+        final description = feedItem.description[emoji];
 
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
-              child: RichText(
-                text: TextSpan(
-                  text: '$emoji ',
-                  style: Theme.of(context).textTheme.title,
-                  children: <TextSpan>[
-                    TextSpan(text: description, style: Theme.of(context).textTheme.body1),
-                  ],
-                ),
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+          child: RichText(
+            text: TextSpan(
+              text: '$emoji ',
+              style: Theme.of(context).textTheme.title,
+              children: <TextSpan>[
+                TextSpan(text: description, style: Theme.of(context).textTheme.body1),
+              ],
+            ),
+          ),
+        );
+      }).toList()
+    );
+  }
+
+  Widget _buildAddressSection(BuildContext context) {
+    if (feedItem.address == null) {
+      return null;
+    }
+
+    return GestureDetector(
+      onTap: () {
+        showCupertinoDialog(
+          context: context,
+          builder: (context) => CupertinoAlertDialog(
+            title: Text('Select navigation app'),
+            actions: <Widget>[
+              CupertinoDialogAction(
+                child: Text('Google Maps'),
+                onPressed: () { print('open Google Maps'); },
               ),
-            );
-          }).toList(),
-        ),
-      ],
+              CupertinoDialogAction(
+                child: Text('Apple Maps'),
+                onPressed: () { print('open Apple Maps'); },
+              ),
+              CupertinoDialogAction(
+                child: Text('Cancel'),
+                isDefaultAction: true,
+                onPressed: () {
+                  Navigator.of(context, rootNavigator: true).pop();
+                },
+              )
+            ],
+          ),
+        );
+      },
+      child: Text('${feedItem.address}'),
     );
   }
 }

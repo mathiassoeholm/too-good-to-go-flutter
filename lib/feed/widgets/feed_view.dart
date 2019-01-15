@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/redux.dart';
@@ -13,21 +14,24 @@ class FeedView extends StatelessWidget {
     StoreConnector<AppState, _ViewModel>(
       converter: _ViewModel.fromStore,
       builder: (context, vm) {
-        if (vm.isFetching) {
+        if (vm.isFetching && vm.feedItems.length == 0) {
 
           return Center(child: CircularProgressIndicator());
 
         } else {
 
-          return RefreshIndicator(
-            onRefresh: vm.refresh,
-            child: ListView.builder(
-              padding: EdgeInsets.zero,
-              itemCount: vm.feedItems.length,
-              itemBuilder: (context, index) {
-                return _buildFeedItemView(context, vm.feedItems[index]);
-              },
-            ),
+          return CustomScrollView(
+            slivers: <Widget>[
+              CupertinoSliverRefreshControl(
+                onRefresh: vm.refresh,
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => _buildFeedItemView(context, vm.feedItems[index]),
+                  childCount: vm.feedItems.length,
+                ),
+              )
+            ],
           );
 
         }

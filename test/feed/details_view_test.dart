@@ -10,7 +10,8 @@ void main() {
       ..companyName = 'Food Inc.'
       ..price['dkk'] = 45
       ..originalPrice['dkk'] = 100
-      ..favorites = 500);
+      ..favorites = 500
+      ..address = 'Nykertemindevej 56a, 8340 Langskov');
 
     await tester.pumpWidget(MaterialApp(home: DetailsView(item)));
 
@@ -18,6 +19,7 @@ void main() {
     expect(find.text('45 DKK'), findsOneWidget);
     expect(find.text('500'), findsOneWidget);
     expect(find.text('100 DKK'), findsOneWidget);
+    expect(find.text('Nykertemindevej 56a, 8340 Langskov'), findsOneWidget);
   });
 
   testWidgets('DetailsView never writes null', (WidgetTester tester) async {

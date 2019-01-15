@@ -87,6 +87,12 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
             specifiedType: const FullType(BuiltMap,
                 const [const FullType(String), const FullType(String)])));
     }
+    if (object.address != null) {
+      result
+        ..add('address')
+        ..add(serializers.serialize(object.address,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -155,6 +161,10 @@ class _$FeedItemSerializer implements StructuredSerializer<FeedItem> {
                 const FullType(String)
               ])) as BuiltMap);
           break;
+        case 'address':
+          result.address = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -185,6 +195,8 @@ class _$FeedItem extends FeedItem {
   final int favorites;
   @override
   final BuiltMap<String, String> description;
+  @override
+  final String address;
 
   factory _$FeedItem([void updates(FeedItemBuilder b)]) =>
       (new FeedItemBuilder()..update(updates)).build();
@@ -200,7 +212,8 @@ class _$FeedItem extends FeedItem {
       this.timeStart,
       this.timeEnd,
       this.favorites,
-      this.description})
+      this.description,
+      this.address})
       : super._();
 
   @override
@@ -224,7 +237,8 @@ class _$FeedItem extends FeedItem {
         timeStart == other.timeStart &&
         timeEnd == other.timeEnd &&
         favorites == other.favorites &&
-        description == other.description;
+        description == other.description &&
+        address == other.address;
   }
 
   @override
@@ -238,17 +252,19 @@ class _$FeedItem extends FeedItem {
                             $jc(
                                 $jc(
                                     $jc(
-                                        $jc($jc(0, companyName.hashCode),
-                                            coverImage.hashCode),
-                                        avatarImage.hashCode),
-                                    location.hashCode),
-                                itemsLeft.hashCode),
-                            price.hashCode),
-                        originalPrice.hashCode),
-                    timeStart.hashCode),
-                timeEnd.hashCode),
-            favorites.hashCode),
-        description.hashCode));
+                                        $jc(
+                                            $jc($jc(0, companyName.hashCode),
+                                                coverImage.hashCode),
+                                            avatarImage.hashCode),
+                                        location.hashCode),
+                                    itemsLeft.hashCode),
+                                price.hashCode),
+                            originalPrice.hashCode),
+                        timeStart.hashCode),
+                    timeEnd.hashCode),
+                favorites.hashCode),
+            description.hashCode),
+        address.hashCode));
   }
 
   @override
@@ -264,7 +280,8 @@ class _$FeedItem extends FeedItem {
           ..add('timeStart', timeStart)
           ..add('timeEnd', timeEnd)
           ..add('favorites', favorites)
-          ..add('description', description))
+          ..add('description', description)
+          ..add('address', address))
         .toString();
   }
 }
@@ -321,6 +338,10 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
   set description(MapBuilder<String, String> description) =>
       _$this._description = description;
 
+  String _address;
+  String get address => _$this._address;
+  set address(String address) => _$this._address = address;
+
   FeedItemBuilder();
 
   FeedItemBuilder get _$this {
@@ -336,6 +357,7 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
       _timeEnd = _$v.timeEnd;
       _favorites = _$v.favorites;
       _description = _$v.description?.toBuilder();
+      _address = _$v.address;
       _$v = null;
     }
     return this;
@@ -370,7 +392,8 @@ class FeedItemBuilder implements Builder<FeedItem, FeedItemBuilder> {
               timeStart: timeStart,
               timeEnd: timeEnd,
               favorites: favorites,
-              description: _description?.build());
+              description: _description?.build(),
+              address: address);
     } catch (_) {
       String _$failedField;
       try {

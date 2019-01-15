@@ -41,6 +41,9 @@ abstract class FeedItem implements Built<FeedItem, FeedItemBuilder> {
   @nullable
   BuiltMap<String, String> get description;
 
+  @nullable
+  String get address;
+
   FeedItem._();
   factory FeedItem([updates(FeedItemBuilder b)]) = _$FeedItem;
 }
