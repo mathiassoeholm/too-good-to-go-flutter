@@ -7,7 +7,7 @@ import 'package:too_good_to_go/location/location_actions.dart';
 
 List<Middleware<AppState>> createLocationMiddleware(LocationProvider.Location locationProvider) {
   return [
-    TypedMiddleware<AppState, AppInitAction>(_listenToLocationChanges(locationProvider)),
+    TypedMiddleware<AppState, AppInitAction>(_createListenToLocationChanges(locationProvider)),
   ];
 }
 
@@ -15,7 +15,7 @@ Function(
   Store<AppState>,
   AppInitAction,
   NextDispatcher,
-  ) _listenToLocationChanges(LocationProvider.Location locationProvider) => (store, action, next)
+  ) _createListenToLocationChanges(LocationProvider.Location locationProvider) => (store, action, next)
 async {
   next(action);
 
