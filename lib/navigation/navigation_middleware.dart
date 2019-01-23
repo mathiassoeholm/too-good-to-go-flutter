@@ -20,6 +20,9 @@ async {
   final location = action.location;
   final googleMapsUrl = 'comgooglemaps://?center=${location.lat},${location.lng}';
 
-  urlLauncher.canLaunch(googleMapsUrl);
-  urlLauncher.launch(googleMapsUrl);
+  final canLaunch = await urlLauncher.canLaunch(googleMapsUrl);
+
+  if (canLaunch) {
+    urlLauncher.launch(googleMapsUrl);
+  }
 };
