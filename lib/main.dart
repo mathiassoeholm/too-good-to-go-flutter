@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -17,9 +18,11 @@ import 'package:too_good_to_go/home/widgets/home.dart';
 import 'package:http/http.dart' as http;
 
 void main() {
-  SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
+  if (Platform.isIOS) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light.copyWith(
     statusBarColor: Colors.white,
-  ));
+    ));
+  }
 
   final random = Random();
   final dummyJson1Future = rootBundle.loadString('assets/dummy-feed1.json');
