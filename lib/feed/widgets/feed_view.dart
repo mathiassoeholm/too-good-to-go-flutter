@@ -21,7 +21,6 @@ class FeedView extends StatelessWidget {
         } else {
 
           return CustomScrollView(
-            physics: BouncingScrollPhysics(),
             slivers: <Widget>[
               CupertinoSliverRefreshControl(
                 onRefresh: vm.refresh,
