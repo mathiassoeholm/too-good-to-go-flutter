@@ -6,6 +6,8 @@ final feedReducer = combineReducers<Feed>([
   TypedReducer<Feed, FetchItemsAction>(_fetchItems),
   TypedReducer<Feed, FetchItemsFailedAction>(_fetchItemsFailed),
   TypedReducer<Feed, FetchItemsSucceededAction>(_fetchItemsSucceeded),
+  TypedReducer<Feed, SelectItemAction>(_selectItem),
+  TypedReducer<Feed, ClearSelectionAction>(_clearSelection),
 ]);
 
 Feed _fetchItems(Feed state, FetchItemsAction action) {
@@ -20,9 +22,22 @@ Feed _fetchItemsFailed(Feed state, FetchItemsFailedAction action) {
     ..isFetching = false
   );
 }
+
 Feed _fetchItemsSucceeded(Feed state, FetchItemsSucceededAction action) {
   return state.rebuild((b) => b
     ..items = action.items
     ..isFetching = false
+  );
+}
+
+Feed _selectItem(Feed state, SelectItemAction action) {
+  return state.rebuild((b) => b
+    ..selectedItem = action.item.toBuilder()
+  );
+}
+
+Feed _clearSelection(Feed state, ClearSelectionAction action) {
+  return state.rebuild((b) => b
+    ..selectedItem = null
   );
 }

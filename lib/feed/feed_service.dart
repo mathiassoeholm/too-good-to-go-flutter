@@ -1,6 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:too_good_to_go/feed/json_parser.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 
 class FeedService {
   final http.BaseClient httpClient;

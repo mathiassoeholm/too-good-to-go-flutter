@@ -1,7 +1,7 @@
 
 import 'package:test/test.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 import 'package:too_good_to_go/location/location.dart';
 import 'package:too_good_to_go/location/location_selector.dart';
 

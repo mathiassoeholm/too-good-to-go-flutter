@@ -5,7 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
 import 'package:too_good_to_go/feed/feed_actions.dart';
 import 'package:too_good_to_go/feed/widgets/details_view.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/feed_item_view.dart';
 
 class FeedView extends StatelessWidget {
@@ -27,7 +27,11 @@ class FeedView extends StatelessWidget {
               ),
               SliverList(
                 delegate: SliverChildBuilderDelegate(
-                  (context, index) => _buildFeedItemView(context, vm.feedItems[index]),
+                  (context, index) {
+                    return FeedItemView(vm.feedItems[index],
+                      onPressed: () => vm.selectItem(context, vm.feedItems[index]),
+                    );
+                  },
                   childCount: vm.feedItems.length,
                 ),
               )
@@ -37,25 +41,19 @@ class FeedView extends StatelessWidget {
         }
       },
     );
-
-  Widget _buildFeedItemView(BuildContext context, FeedItem feedItem) =>
-    FeedItemView(feedItem,
-      onPressed: () => Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => DetailsView(feedItem))
-      )
-    );
 }
 
 class _ViewModel {
   final List<FeedItem> feedItems;
   final bool isFetching;
   final Function refresh;
+  final Function(BuildContext, FeedItem) selectItem;
 
   _ViewModel({
     @required this.feedItems,
     @required this.isFetching,
     @required this.refresh,
+    @required this.selectItem,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -67,6 +65,14 @@ class _ViewModel {
         store.dispatch(action);
         return action.completer.future;
       },
+      selectItem: (context, feedItem) {
+        store.dispatch(SelectItemAction(feedItem));
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => DetailsView())
+        );
+      }
     );
   }
 }

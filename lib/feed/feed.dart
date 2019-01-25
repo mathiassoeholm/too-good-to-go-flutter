@@ -1,10 +1,13 @@
 import 'package:built_value/built_value.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 
 part 'feed.g.dart';
 
 abstract class Feed implements Built<Feed, FeedBuilder> {
   List<FeedItem> get items;
+
+  @nullable
+  FeedItem get selectedItem;
 
   bool get isFetching;
 

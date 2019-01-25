@@ -3,7 +3,7 @@ import 'package:test/test.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
 import 'package:too_good_to_go/appstate/app_state_reducer.dart';
 import 'package:too_good_to_go/feed/feed_actions.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 
 main() {
   group('Feed Reducer', () {
@@ -53,6 +53,28 @@ main() {
 
       expect(store.state.feed.isFetching, false);
       expect(store.state.feed.items, feedItems);
+    });
+
+    test('should set selected item', () {
+      final feedItem1 = FeedItem((b) => b..companyName = 'Company 1');
+      final feedItem2 = FeedItem((b) => b..companyName = 'Company 2');
+
+      final store = Store<AppState>(
+        appStateReducer,
+        initialState: AppState((b) => b
+          ..feed.items = [feedItem1, feedItem2]
+        )
+      );
+
+      expect(store.state.feed.selectedItem, null);
+
+      store.dispatch(SelectItemAction(feedItem2));
+
+      expect(store.state.feed.selectedItem, feedItem2);
+
+      store.dispatch(ClearSelectionAction());
+
+      expect(store.state.feed.selectedItem, null);
     });
   });
 }

@@ -1,6 +1,6 @@
 import 'package:latlong/latlong.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 
 Map<FeedItem, double> distancesSelector(AppState state) {
   if (state.location == null) {

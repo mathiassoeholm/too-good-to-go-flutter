@@ -1,7 +1,7 @@
 import "package:test/test.dart";
 import 'package:too_good_to_go/feed/feed_service.dart';
 import 'package:too_good_to_go/feed/json_parser.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 

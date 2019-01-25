@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 import 'package:too_good_to_go/feed/pretty_distance.dart';
 import 'package:too_good_to_go/feed/widgets/favorites_button.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';

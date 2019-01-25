@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 
 class FetchItemsAction {
   final Completer completer;
@@ -20,3 +20,11 @@ class FetchItemsSucceededAction {
 
   FetchItemsSucceededAction(this.items);
 }
+
+class SelectItemAction {
+  final FeedItem item;
+
+  SelectItemAction(this.item);
+}
+
+class ClearSelectionAction { }

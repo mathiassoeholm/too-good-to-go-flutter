@@ -6,7 +6,7 @@ import 'package:too_good_to_go/appstate/app_state.dart';
 import 'package:too_good_to_go/appstate/app_state_reducer.dart';
 import 'package:too_good_to_go/feed/feed_actions.dart';
 import 'package:too_good_to_go/feed/feed_middleware.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 
 import '../mocks.dart';
 

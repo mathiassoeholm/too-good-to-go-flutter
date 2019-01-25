@@ -5,7 +5,7 @@ import 'package:redux/redux.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
 import 'package:too_good_to_go/feed/feed_actions.dart';
 import 'package:too_good_to_go/feed/widgets/details_view.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/feed_item_view.dart';
 import 'package:too_good_to_go/feed/widgets/feed_view.dart';
 import 'package:too_good_to_go/appstate/app_state_reducer.dart';
@@ -43,7 +43,7 @@ void main() {
 
     expect(find.byType(CircularProgressIndicator), findsNothing);
 
-    final listView = find.byType(ListView);
+    final listView = find.byType(CustomScrollView);
 
     expect(listView, findsOneWidget);
     expect(find.descendant(of: listView, matching: find.byType(FeedItemView)),
@@ -73,6 +73,8 @@ void main() {
 
     expect(find.byType(FeedView), findsNothing);
     expect(find.byType(DetailsView), findsOneWidget);
+
+    expect(store.state.feed.selectedItem, store.state.feed.items[0]);
   });
 }
 

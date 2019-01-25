@@ -1,6 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:too_good_to_go/feed/models/feed_item.dart';
+import 'package:flutter_redux/flutter_redux.dart';
+import 'package:redux/src/store.dart';
+import 'package:too_good_to_go/appstate/app_state.dart';
+import 'package:too_good_to_go/feed/submodels/feed_item.dart';
+import 'package:too_good_to_go/feed/widgets/address_section.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
 import 'package:too_good_to_go/feed/widgets/favorites_button.dart';
 import 'package:too_good_to_go/shared/theme.dart';
@@ -16,26 +20,25 @@ class DetailsView extends StatelessWidget {
   static const statusIndicatorRadius = 8.0;
   static const blackBarHorizontalPadding = 20.0;
 
-  final FeedItem feedItem;
-
-  const DetailsView(
-    this.feedItem,
-  );
-
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.white,
-      child: Column(
-        children: <Widget>[
-          _buildTop(context),
-          _buildBottom(context),
-        ],
-      ),
+    return StoreConnector<AppState, _ViewModel>(
+      converter: _ViewModel.fromStore,
+      builder: (context, vm) {
+        return Material(
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              _buildTop(vm.feedItem, context),
+              _buildBottom(vm.feedItem, context),
+            ],
+          ),
+        );
+      }
     );
   }
 
-  Widget _buildTop(BuildContext context) {
+  Widget _buildTop(FeedItem feedItem, BuildContext context) {
     final safeAreaTop = MediaQuery.of(context).padding.top;
 
     return Stack(
@@ -46,13 +49,13 @@ class DetailsView extends StatelessWidget {
             height: safeAreaTop + topAreaHeight + extraSpaceSoAvatarCanOverflow,
             decoration: BoxDecoration(color: Colors.white),
         ),
-        _buildImage(safeAreaTop),
-        _buildStackWithSafeArea(context, safeAreaTop),
+        _buildImage(feedItem, safeAreaTop),
+        _buildStackWithSafeArea(feedItem, context, safeAreaTop),
       ]),
     );
   }
 
-  Widget _buildStackWithSafeArea(BuildContext context, double safeAreaTop) {
+  Widget _buildStackWithSafeArea(FeedItem feedItem, BuildContext context, double safeAreaTop) {
     return Positioned(
       top: safeAreaTop,
       left:  0,
@@ -62,21 +65,21 @@ class DetailsView extends StatelessWidget {
         alignment: AlignmentDirectional.center,
         children: ListUtil.notNullWidgets([
           Container(height: topAreaHeight),
-          _buildCompanyName(),
+          _buildCompanyName(feedItem),
           _buildBackButton(context),
           _buildBlackBar(),
-          _buildAvatar(),
+          _buildAvatar(feedItem),
           _buildStatusIndicator(),
-          _buildAmountLeftText(),
-          _buildPriceText(),
-          _buildFavoritesButton(),
-          _buildOriginalPriceText(),
+          _buildAmountLeftText(feedItem),
+          _buildPriceText(feedItem),
+          _buildFavoritesButton(feedItem),
+          _buildOriginalPriceText(feedItem),
         ]),
       ),
     );
   }
 
-  Widget _buildImage(double safeAreaTop) {
+  Widget _buildImage(FeedItem feedItem, double safeAreaTop) {
     if (feedItem.coverImage == null) {
       return Container(
           height: safeAreaTop + topAreaHeight,
@@ -95,7 +98,7 @@ class DetailsView extends StatelessWidget {
     );
   }
 
-  Widget _buildCompanyName() {
+  Widget _buildCompanyName(FeedItem feedItem) {
     if (feedItem.companyName == null) {
       return null;
     }
@@ -129,7 +132,7 @@ class DetailsView extends StatelessWidget {
   }
 
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(FeedItem feedItem) {
     if (feedItem.avatarImage == null) {
       return null;
     }
@@ -169,7 +172,7 @@ class DetailsView extends StatelessWidget {
     );
   }
   
-  Widget _buildAmountLeftText() {
+  Widget _buildAmountLeftText(FeedItem feedItem) {
     if (feedItem.itemsLeft == null) {
       return null;
     }
@@ -191,7 +194,7 @@ class DetailsView extends StatelessWidget {
     );
   }
 
-  Widget _buildPriceText() {
+  Widget _buildPriceText(FeedItem feedItem) {
     if (feedItem.price == null || !feedItem.price.containsKey('dkk')) {
       return null;
     }
@@ -211,7 +214,7 @@ class DetailsView extends StatelessWidget {
     );
   }
 
-  Widget _buildOriginalPriceText() {
+  Widget _buildOriginalPriceText(FeedItem feedItem) {
     if (feedItem.originalPrice == null || !feedItem.price.containsKey('dkk')) {
       return null;
     }
@@ -231,7 +234,7 @@ class DetailsView extends StatelessWidget {
     );
   }
   
-  Widget _buildFavoritesButton() {
+  Widget _buildFavoritesButton(FeedItem feedItem) {
     if (feedItem.favorites == null) {
       return null;
     }
@@ -244,22 +247,22 @@ class DetailsView extends StatelessWidget {
     );
   }
 
-  Widget _buildBottom(BuildContext context) {
+  Widget _buildBottom(FeedItem feedItem, BuildContext context) {
     return Expanded(
       child: SafeArea(
         top: false,
         child: ListView(
           padding: EdgeInsets.all(0),
           children: ListUtil.notNullWidgets([
-            _buildDescription(context),
-            _buildAddressSection(context),
+            _buildDescription(feedItem, context),
+            AddressSection(),
           ])
         ),
       ),
     );
   }
 
-  Widget _buildDescription(BuildContext context) {
+  Widget _buildDescription(FeedItem feedItem, BuildContext context) {
     if (feedItem.description == null) {
       return null;
     }
@@ -283,39 +286,18 @@ class DetailsView extends StatelessWidget {
       }).toList()
     );
   }
+}
 
-  Widget _buildAddressSection(BuildContext context) {
-    if (feedItem.address == null) {
-      return null;
-    }
+class _ViewModel {
+  final FeedItem feedItem;
 
-    return GestureDetector(
-      onTap: () {
-        showCupertinoDialog(
-          context: context,
-          builder: (context) => CupertinoAlertDialog(
-            title: Text('Select navigation app'),
-            actions: <Widget>[
-              CupertinoDialogAction(
-                child: Text('Google Maps'),
-                onPressed: () { print('open Google Maps'); },
-              ),
-              CupertinoDialogAction(
-                child: Text('Apple Maps'),
-                onPressed: () { print('open Apple Maps'); },
-              ),
-              CupertinoDialogAction(
-                child: Text('Cancel'),
-                isDefaultAction: true,
-                onPressed: () {
-                  Navigator.of(context, rootNavigator: true).pop();
-                },
-              )
-            ],
-          ),
-        );
-      },
-      child: Text('${feedItem.address}'),
+  _ViewModel({
+    @required this.feedItem,
+  });
+
+  static _ViewModel fromStore(Store<AppState> store) {
+    return _ViewModel(
+      feedItem: store.state.feed?.selectedItem ?? FeedItem(),
     );
   }
 }

@@ -10,6 +10,8 @@ class _$Feed extends Feed {
   @override
   final List<FeedItem> items;
   @override
+  final FeedItem selectedItem;
+  @override
   final bool isFetching;
   @override
   final Exception fetchError;
@@ -17,7 +19,8 @@ class _$Feed extends Feed {
   factory _$Feed([void updates(FeedBuilder b)]) =>
       (new FeedBuilder()..update(updates)).build();
 
-  _$Feed._({this.items, this.isFetching, this.fetchError}) : super._() {
+  _$Feed._({this.items, this.selectedItem, this.isFetching, this.fetchError})
+      : super._() {
     if (items == null) {
       throw new BuiltValueNullFieldError('Feed', 'items');
     }
@@ -38,6 +41,7 @@ class _$Feed extends Feed {
     if (identical(other, this)) return true;
     return other is Feed &&
         items == other.items &&
+        selectedItem == other.selectedItem &&
         isFetching == other.isFetching &&
         fetchError == other.fetchError;
   }
@@ -45,13 +49,16 @@ class _$Feed extends Feed {
   @override
   int get hashCode {
     return $jf($jc(
-        $jc($jc(0, items.hashCode), isFetching.hashCode), fetchError.hashCode));
+        $jc($jc($jc(0, items.hashCode), selectedItem.hashCode),
+            isFetching.hashCode),
+        fetchError.hashCode));
   }
 
   @override
   String toString() {
     return (newBuiltValueToStringHelper('Feed')
           ..add('items', items)
+          ..add('selectedItem', selectedItem)
           ..add('isFetching', isFetching)
           ..add('fetchError', fetchError))
         .toString();
@@ -64,6 +71,12 @@ class FeedBuilder implements Builder<Feed, FeedBuilder> {
   List<FeedItem> _items;
   List<FeedItem> get items => _$this._items;
   set items(List<FeedItem> items) => _$this._items = items;
+
+  FeedItemBuilder _selectedItem;
+  FeedItemBuilder get selectedItem =>
+      _$this._selectedItem ??= new FeedItemBuilder();
+  set selectedItem(FeedItemBuilder selectedItem) =>
+      _$this._selectedItem = selectedItem;
 
   bool _isFetching;
   bool get isFetching => _$this._isFetching;
@@ -78,6 +91,7 @@ class FeedBuilder implements Builder<Feed, FeedBuilder> {
   FeedBuilder get _$this {
     if (_$v != null) {
       _items = _$v.items;
+      _selectedItem = _$v.selectedItem?.toBuilder();
       _isFetching = _$v.isFetching;
       _fetchError = _$v.fetchError;
       _$v = null;
@@ -100,9 +114,25 @@ class FeedBuilder implements Builder<Feed, FeedBuilder> {
 
   @override
   _$Feed build() {
-    final _$result = _$v ??
-        new _$Feed._(
-            items: items, isFetching: isFetching, fetchError: fetchError);
+    _$Feed _$result;
+    try {
+      _$result = _$v ??
+          new _$Feed._(
+              items: items,
+              selectedItem: _selectedItem?.build(),
+              isFetching: isFetching,
+              fetchError: fetchError);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'selectedItem';
+        _selectedItem?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'Feed', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }
