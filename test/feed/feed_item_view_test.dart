@@ -35,8 +35,7 @@ void main() {
   });
 
   testWidgets('It never writes null', (WidgetTester tester) async {
-    pumpWidgetWithStore(
-        tester: tester,
+    pumpWidgetWithState(tester,
         widget: FeedItemView(FeedItem())
     );
 
@@ -44,8 +43,7 @@ void main() {
   });
 
   testWidgets('It checks if dkk is in the map ', (WidgetTester tester) async {
-    pumpWidgetWithStore(
-        tester: tester,
+    pumpWidgetWithState(tester,
         widget: FeedItemView(
             FeedItem((b) => b
               ..price['usd'] = 44

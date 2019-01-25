@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:redux/redux.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
+import 'package:too_good_to_go/appstate/app_state_reducer.dart';
 import 'package:too_good_to_go/feed/widgets/details_view.dart';
 import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 import '../utilities/test_utilites.dart';
@@ -13,8 +16,7 @@ void main() {
       ..favorites = 500
       ..address = 'Nykertemindevej 56a, 8340 Langskov');
 
-    await pumpWidgetWithStore(
-      tester: tester,
+    await pumpWidgetWithState(tester,
       initialState: AppState((b) => b
         ..feed.selectedItem = item.toBuilder()
       ),
@@ -29,8 +31,7 @@ void main() {
   });
 
   testWidgets('DetailsView never writes null', (WidgetTester tester) async {
-    await pumpWidgetWithStore(
-      tester: tester,
+    await pumpWidgetWithState(tester,
       widget: DetailsView(),
     );
 
@@ -46,8 +47,7 @@ void main() {
       ..originalPrice['eur'] = 32
     );
 
-    await pumpWidgetWithStore(
-      tester: tester,
+    await pumpWidgetWithState(tester,
       initialState: AppState((b) => b
         ..feed.selectedItem = item.toBuilder()
       ),
@@ -55,6 +55,24 @@ void main() {
     );
 
     expectNoTextToContainNull();
+  });
+  
+  testWidgets('it should clear selection when going back', (WidgetTester tester) async {
+    final store = Store<AppState>(
+      appStateReducer,
+      initialState: AppState((b) => b
+        ..feed.selectedItem = FeedItem().toBuilder()
+      )
+    );
+
+    await pumpWidgetWithStore(tester,
+        store: store,
+        widget: DetailsView(),
+    );
+
+    await tester.tap(find.byIcon(Icons.arrow_back));
+
+    expect(store.state.feed.selectedItem, null);
   });
 }
 

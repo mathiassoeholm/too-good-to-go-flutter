@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux/src/store.dart';
 import 'package:too_good_to_go/appstate/app_state.dart';
+import 'package:too_good_to_go/feed/feed_actions.dart';
 import 'package:too_good_to_go/feed/submodels/feed_item.dart';
 import 'package:too_good_to_go/feed/widgets/address_section.dart';
 import 'package:too_good_to_go/feed/widgets/company_avatar.dart';
+import 'package:too_good_to_go/feed/widgets/details_back_button.dart';
 import 'package:too_good_to_go/feed/widgets/favorites_button.dart';
 import 'package:too_good_to_go/shared/theme.dart';
 import 'package:too_good_to_go/shared/utilities/list_util.dart';
@@ -66,7 +68,7 @@ class DetailsView extends StatelessWidget {
         children: ListUtil.notNullWidgets([
           Container(height: topAreaHeight),
           _buildCompanyName(feedItem),
-          _buildBackButton(context),
+          DetailsBackButton(),
           _buildBlackBar(),
           _buildAvatar(feedItem),
           _buildStatusIndicator(),
@@ -115,22 +117,6 @@ class DetailsView extends StatelessWidget {
         )),
     );
   }
-
-  Widget _buildBackButton(BuildContext context) {
-    return Positioned(
-      top: 5,
-      left: 5,
-      child: IconButton(
-        color: Colors.white,
-        onPressed: () => Navigator.pop(context),
-        icon: Icon(Icons.arrow_back,
-          size: 32,
-          color: Colors.white
-        ),
-      ),
-    );
-  }
-
 
   Widget _buildAvatar(FeedItem feedItem) {
     if (feedItem.avatarImage == null) {
@@ -290,15 +276,17 @@ class DetailsView extends StatelessWidget {
 
 class _ViewModel {
   final FeedItem feedItem;
+  final Function clearSelection;
 
   _ViewModel({
     @required this.feedItem,
+    @required this.clearSelection,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       feedItem: store.state.feed?.selectedItem ?? FeedItem(),
+      clearSelection: () => store.dispatch(ClearSelectionAction()),
     );
   }
 }
-

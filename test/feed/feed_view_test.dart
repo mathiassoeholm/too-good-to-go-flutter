@@ -10,6 +10,8 @@ import 'package:too_good_to_go/feed/widgets/feed_item_view.dart';
 import 'package:too_good_to_go/feed/widgets/feed_view.dart';
 import 'package:too_good_to_go/appstate/app_state_reducer.dart';
 
+import '../utilities/test_utilites.dart';
+
 void main() {
   testWidgets('it toggles progress indicator and list view', (WidgetTester tester) async {
     final store = Store<AppState>(
@@ -17,13 +19,9 @@ void main() {
       initialState: AppState(),
     );
 
-    await tester.pumpWidget(
-        StoreProvider(
-            store: store,
-            child: MaterialApp(
-              home: FeedView(),
-            )
-        )
+    await pumpWidgetWithStore(tester,
+      store: store,
+      widget: FeedView(),
     );
 
     store.dispatch(FetchItemsAction());
@@ -50,20 +48,16 @@ void main() {
         findsNWidgets(2));
   });
 
-  testWidgets('It navigates to DetailsPage when pressing feed item',
+  testWidgets('it navigates to DetailsPage when pressing feed item',
           (WidgetTester tester) async {
     final store = Store<AppState>(
       appStateReducer,
       initialState: AppState((b) => b..feed.items = [FeedItem()]),
     );
 
-    await tester.pumpWidget(
-        StoreProvider(
-            store: store,
-            child: MaterialApp(
-              home: FeedView(),
-            )
-        )
+    await pumpWidgetWithStore(tester,
+      store: store,
+      widget: FeedView(),
     );
 
     // Simulate press

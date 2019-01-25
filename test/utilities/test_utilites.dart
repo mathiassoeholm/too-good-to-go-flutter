@@ -13,8 +13,7 @@ void expectNoTextToContainNull() {
   });
 }
 
-Future<void> pumpWidgetWithStore({
-  @required WidgetTester tester,
+Future<void> pumpWidgetWithState(WidgetTester tester, {
   AppState initialState,
   @required Widget widget,
 }) {
@@ -23,12 +22,22 @@ Future<void> pumpWidgetWithStore({
     initialState: initialState ?? AppState()
   );
 
+  return pumpWidgetWithStore(tester,
+    store: store,
+    widget: widget,
+  );
+}
+
+Future<void> pumpWidgetWithStore(WidgetTester tester, {
+  @required Store<AppState> store,
+  @required Widget widget,
+}) {
   return tester.pumpWidget(
-    StoreProvider(
-      store: store,
-      child: MaterialApp(
-        home: widget,
+      StoreProvider(
+          store: store,
+          child: MaterialApp(
+            home: widget,
+          )
       )
-    )
   );
 }
